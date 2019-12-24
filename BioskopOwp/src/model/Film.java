@@ -4,33 +4,56 @@ public class Film {
 
 	private int id;
 	private String naziv;
-	private int trajanje;
-	private String distributer;
-	private String zemljaPorekla;
-	private int godinaProizvodnje;
-	private String opis;
 	private String reziser;
 	private String glumci;
 	private String zanrovi;
+	private String distributer;
+	private int godinaProizvodnje;
+	private String opis;
+	private int trajanje;
+	private String zemljaPorekla;
 
 	public Film() {
 
 	}
+	
+	
+	
+	
 
-	public Film(int id, String naziv, int trajanje, String distributer, String zemljaPorekla, int godinaProizvodnje,
-			String opis, String reziser, String glumci, String zanrovi) {
+	public Film(int id, String naziv, String reziser, String glumci, String zanrovi, String distributer, String opis,
+			String zemljaPorekla) {
 		super();
 		this.id = id;
 		this.naziv = naziv;
-		this.trajanje = trajanje;
-		this.distributer = distributer;
-		this.zemljaPorekla = zemljaPorekla;
-		this.godinaProizvodnje = godinaProizvodnje;
-		this.opis = opis;
 		this.reziser = reziser;
 		this.glumci = glumci;
 		this.zanrovi = zanrovi;
+		this.distributer = distributer;
+		this.opis = opis;
+		this.zemljaPorekla = zemljaPorekla;
 	}
+
+
+
+
+
+	public Film(int id, String naziv, String reziser, String glumci, String zanrovi, String distributer,
+			int godinaProizvodnje, String opis, int trajanje, String zemljaPorekla) {
+		super();
+		this.id = id;
+		this.naziv = naziv;
+		this.reziser = reziser;
+		this.glumci = glumci;
+		this.zanrovi = zanrovi;
+		this.distributer = distributer;
+		this.godinaProizvodnje = godinaProizvodnje;
+		this.opis = opis;
+		this.trajanje = trajanje;
+		this.zemljaPorekla = zemljaPorekla;
+	}
+
+
 
 	public int getId() {
 		return id;
@@ -47,7 +70,7 @@ public class Film {
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
 	}
-	
+
 	public String getReziser() {
 		return reziser;
 	}
@@ -56,12 +79,20 @@ public class Film {
 		this.reziser = reziser;
 	}
 
-	public int getTrajanje() {
-		return trajanje;
+	public String getGlumci() {
+		return glumci;
 	}
 
-	public void setTrajanje(int trajanje) {
-		this.trajanje = trajanje;
+	public void setGlumci(String glumci) {
+		this.glumci = glumci;
+	}
+
+	public String getZanrovi() {
+		return zanrovi;
+	}
+
+	public void setZanrovi(String zanrovi) {
+		this.zanrovi = zanrovi;
 	}
 
 	public String getDistributer() {
@@ -70,14 +101,6 @@ public class Film {
 
 	public void setDistributer(String distributer) {
 		this.distributer = distributer;
-	}
-
-	public String getZemljaPorekla() {
-		return zemljaPorekla;
-	}
-
-	public void setZemljaPorekla(String zemljaPorekla) {
-		this.zemljaPorekla = zemljaPorekla;
 	}
 
 	public int getGodinaProizvodnje() {
@@ -96,21 +119,23 @@ public class Film {
 		this.opis = opis;
 	}
 
-
-	public String getGlumci() {
-		return glumci;
+	public int getTrajanje() {
+		return trajanje;
 	}
 
-	public void setGlumci (String glumci) {
-		this.glumci = glumci;
+	public void setTrajanje(int trajanje) {
+		this.trajanje = trajanje;
 	}
 
-	public String getZanrovi() {
-		return zanrovi;
+	public String getZemljaPorekla() {
+		return zemljaPorekla;
 	}
 
-	public void setZanrovi(String zanrovi) {
-		this.zanrovi = zanrovi;
+	public void setZemljaPorekla(String zemljaPorekla) {
+		this.zemljaPorekla = zemljaPorekla;
 	}
+
+	
+	
 
 }

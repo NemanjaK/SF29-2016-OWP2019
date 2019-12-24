@@ -1,25 +1,24 @@
 package servlet;
 
+
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import dao.ConnectionManager;
 
 public class InitListener implements ServletContextListener {
+	
+    public void contextDestroyed(ServletContextEvent arg0)  { 
+        ConnectionManager.close();
+   }
 
-	@Override
-	public void contextDestroyed(ServletContextEvent sce) {
-		ConnectionManager.close();
-		
-	}
-
-	@Override
-	public void contextInitialized(ServletContextEvent sce) {
-		System.out.println("inicijalizacija...");
-		
+   public void contextInitialized(ServletContextEvent event)  { 
+	   System.out.println("Inicijalizacija");
+	   
 		ConnectionManager.open();
-				
-		System.out.println("zavrseno!");
-	}
 
+   }
+	
+	
 }
