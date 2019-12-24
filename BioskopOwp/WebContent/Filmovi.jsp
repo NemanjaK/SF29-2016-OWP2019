@@ -25,7 +25,7 @@
 		</tr>
 		<c:forEach var="film" items="${filmovi}">
 			<tr>
-				<td>${film.naziv}</a></td>
+				<td><a href="FilmServlet?id=${film.id}">${film.naziv}</a></td>
 				<td>${film.trajanje }</td>
 				<td>${film.distributer }</td>
 				<td>${film.reziser }</td>

@@ -51,6 +51,43 @@ public class FilmoviDAO {
 		return null;
 
 	}
+	
+	public static Film getOne(int id) throws Exception {
+		Connection conn = ConnectionManager.getConnection();
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		try {
+			String query = "SELECT * FROM film WHERE id = ?";
+
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, id);
+			System.out.println(pstmt);
+			rset = pstmt.executeQuery();
+
+			if (rset.next()) {
+				int index = 2;
+				String naziv = rset.getString(index++);
+				String reziser = rset.getString(index++);
+				String glumci = rset.getString(index++);
+				String zanrovi = rset.getString(index++);
+				String distributer = rset.getString(index++);
+				Integer godinaProizvodnje = rset.getInt(index++);
+				String opis = rset.getString(index++);
+				Integer trajanje = rset.getInt(index++);
+				String zemljaPorekla = rset.getString(index++);
+
+				return new Film(id, naziv, reziser, glumci, zanrovi, distributer, godinaProizvodnje, opis, trajanje,
+						zemljaPorekla);
+
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
+
+	}
 
 	
 
