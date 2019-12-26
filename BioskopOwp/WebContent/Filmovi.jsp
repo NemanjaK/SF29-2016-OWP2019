@@ -23,6 +23,11 @@
 			<th>Opis</th>
 			<th>Zanrovi</th>
 		</tr>
+		<form action="FilmoviServlet" method="get">
+			<tr bgcolor="lightgrey">
+				<td align="center"><input type="text" name="nazivFilter" value="${film.naziv}"><input type="submit" value="Pretrazi po nazivu"></td>
+				</tr>
+		</form>
 		<c:forEach var="film" items="${filmovi}">
 			<tr>
 				<td><a href="FilmServlet?id=${film.id}">${film.naziv}</a></td>
@@ -38,7 +43,6 @@
 			
 		</c:forEach>
 	</table>
-	<p><a href="AddFilm.html">Dodaj film</a></p>
 	
 </body>
 </html>
