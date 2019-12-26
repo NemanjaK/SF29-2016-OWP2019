@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Dodavanje filma</title>
+
+</head>
+<body>
+	<h3>Dodavanje filma:</h3>
+	<form action="FilmoviServlet" method="post">
+		<input type="hidden" name="action" value="add"/>
+		<table>
+				<tr><td align="right">Naziv:</td><td><input type="text" id="naziv"/></td></tr>
+				<tr><td align="right">Reziser:</td><td><input type="text" id="reziser"/></td></tr>			
+				<tr><td align="right">Glumci:</td><td><input type="text" id="glumci"/></td></tr>			
+				<tr><td align="right">Zanrovi:</td><td><input type="text" id="zanrovi"/></td></tr>
+				<tr><td align="right">Distributer:</td><td><input type="text" id="distributer"/></td></tr>
+				<tr><td align="right">Godina proizvodnje:</td><td><input type="text" id="godinaProizvodnjeF"/></td></tr>				
+				<tr><td align="right">Opis:</td><td><input type="text" id="opis"/></td></tr>
+				<tr><td align="right">Trajanje:</td><td><input type="text" id="trajanje"/></td></tr>
+				<tr><td align="right">Zemlja porekla:</td><td><input type="text" id="zemlja porekla"/></td></tr>
+			<tr><td/><td><input type="submit" value="Dodaj" id="productSubmit"></td></tr>
+		</table>
+	</form>
+
+</body>
+</html>

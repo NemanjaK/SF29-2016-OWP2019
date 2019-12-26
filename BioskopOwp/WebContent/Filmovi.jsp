@@ -41,8 +41,10 @@
 				<td>${film.zanrovi }</td>
 			</tr>
 			
-		</c:forEach>
+		</c:forEach>		
 	</table>
-	
+		<a href="AddFilm.html">Dodaj film</a>
+		
+		<a href="KorisniciServlet">Korisnici</a>
 </body>
 </html>

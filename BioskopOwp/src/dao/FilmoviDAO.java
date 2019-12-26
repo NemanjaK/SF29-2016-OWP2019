@@ -11,7 +11,7 @@ import model.Film;
 
 public class FilmoviDAO {
 
-	public static List<Film> getAll(String naziv) {
+	public static List<Film> getAll(String naziv)  {
 		List<Film> filmovi = new ArrayList<>();
 
 		Connection conn = ConnectionManager.getConnection();
@@ -55,7 +55,7 @@ public class FilmoviDAO {
 
 	}
 
-	public static Film getOne(int id) throws Exception {
+	public static Film getOne(int id)  {
 		Connection conn = ConnectionManager.getConnection();
 
 		PreparedStatement pstmt = null;
@@ -167,27 +167,36 @@ public class FilmoviDAO {
 		return 0;
 	}
 
-	/*
-	 * public static boolean add(Film film) throws Exception { Connection conn =
-	 * ConnectionManager.getConnection();
-	 * 
-	 * PreparedStatement pstmt = null; try { String query =
-	 * "INSERT INTO film (naziv, reziser, glumci, zanrovi, distributer, godinaProizvodnje, opis, trajanje, zemljaPorekla)"
-	 * + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"; pstmt = conn.prepareStatement(query);
-	 * 
-	 * 
-	 * int index = 1; pstmt.setString(index++, film.getNaziv());
-	 * pstmt.setString(index++, film.getReziser()); pstmt.setString(index++,
-	 * film.getGlumci()); pstmt.setString(index++, film.getZanrovi());
-	 * pstmt.setString(index++, film.getDistributer()); pstmt.setInt(index++,
-	 * film.getGodinaProizvodnje()); pstmt.setString(index++, film.getOpis());
-	 * pstmt.setInt(index++, film.getTrajanje()); pstmt.setString(index++,
-	 * film.getZemljaPorekla()); System.out.println(pstmt);
-	 * 
-	 * return pstmt.executeUpdate() == 1;
-	 * 
-	 * } catch (Exception ex) { System.out.println("Greska SQL add");
-	 * ex.printStackTrace(); }finally { try {pstmt.close();} catch (SQLException
-	 * ex1) {ex1.printStackTrace();} } return false; }
-	 */
+	public static boolean add(Film film) throws Exception {
+		Connection conn = ConnectionManager.getConnection();
+
+		PreparedStatement pstmt = null;
+		try {
+			String query = "INSERT INTO film (naziv, reziser, glumci, zanrovi, distributer, godinaProizvodnje, opis, trajanje, zemljaPorekla)"
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			pstmt = conn.prepareStatement(query);
+
+
+			int index = 1;
+			pstmt.setString(index++, film.getNaziv());
+			pstmt.setString(index++, film.getReziser());
+			pstmt.setString(index++, film.getGlumci());
+			pstmt.setString(index++, film.getZanrovi());
+			pstmt.setString(index++, film.getDistributer());
+			pstmt.setInt(index++, film.getGodinaProizvodnje());
+			pstmt.setString(index++, film.getOpis());
+			pstmt.setInt(index++, film.getTrajanje());
+			pstmt.setString(index++, film.getZemljaPorekla());
+			System.out.println(pstmt);
+
+			return pstmt.executeUpdate() == 1;
+
+		} catch (Exception ex) {
+			System.out.println("Greska SQL add");
+			ex.printStackTrace();
+		}finally {
+			try {pstmt.close();} catch (SQLException ex1) {ex1.printStackTrace();}
+		}		
+		return false;
+	}
 }

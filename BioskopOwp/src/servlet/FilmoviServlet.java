@@ -62,8 +62,8 @@ public class FilmoviServlet extends HttpServlet {
 				 * 
 				 * Film film = new Film(id, naziv, reziser, glumci, zanrovi, distributer,
 				 * godinaProizvodnjeF, opis, trajanje, zemljaPorekla); FilmoviDAO.add(film);
-				 * break;
 				 */
+				break;
 			}
 			case "update": {
 
