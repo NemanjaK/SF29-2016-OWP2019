@@ -3,11 +3,8 @@ package servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,11 +20,11 @@ public class FilmoviServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String naziv = request.getParameter("nazivFilter");
-		naziv = (naziv != null? naziv: "");
-		
+		naziv = (naziv != null ? naziv : "");
+
 		List<Film> filmovi = FilmoviDAO.getAll(naziv);
-		
-		request.setAttribute("filmovi", filmovi);		
+
+		request.setAttribute("filmovi", filmovi);
 		request.getRequestDispatcher("Filmovi.jsp").forward(request, response);
 	}
 
@@ -38,31 +35,32 @@ public class FilmoviServlet extends HttpServlet {
 			String action = request.getParameter("action");
 			switch (action) {
 			case "add": {
-				/*
-				 * String naziv = request.getParameter("naziv");
-				 * 
-				 * String reziser = request.getParameter("reziser");
-				 * 
-				 * String glumci = request.getParameter("glumci");
-				 * 
-				 * String zanrovi = request.getParameter("zanrovi");
-				 * 
-				 * String distributer = request.getParameter("distributer");
-				 * 
-				 * String godinaProizvodnje = request.getParameter("godinaProizvodnjeF"); int
-				 * godinaProizvodnjeF = Integer.parseInt(godinaProizvodnje);
-				 * 
-				 * String opis = request.getParameter("opis");
-				 * 
-				 * int trajanje = Integer.parseInt(request.getParameter("trajanje"));
-				 * 
-				 * String zemljaPorekla = request.getParameter("zemljaPorekla");
-				 * 
-				 * int id = FilmoviDAO.getFilmId();
-				 * 
-				 * Film film = new Film(id, naziv, reziser, glumci, zanrovi, distributer,
-				 * godinaProizvodnjeF, opis, trajanje, zemljaPorekla); FilmoviDAO.add(film);
-				 */
+				
+				 String naziv = request.getParameter("naziv");
+				 
+				 String reziser = request.getParameter("reziser");
+				 
+				 String glumci = request.getParameter("glumci");
+				 
+				  String zanrovi = request.getParameter("zanrovi");
+				  
+				  String distributer = request.getParameter("distributer");
+				  System.out.println(request.getParameter("godinaProizvodnje") + "++++++++++++");
+				  
+				  Integer godinaProizvodnje = Integer.parseInt(request.getParameter("godinaProizvodnje"));
+				 
+				  String opis = request.getParameter("opis");
+				  
+				  int trajanje = Integer.parseInt(request.getParameter("trajanje"));
+				  
+				  String zemljaPorekla = request.getParameter("zemljaPorekla");
+				
+				  int id = FilmoviDAO.getFilmId();
+				  
+				  Film film = new Film(id, naziv, reziser, glumci, zanrovi, distributer,
+				  godinaProizvodnje, opis, trajanje, zemljaPorekla); 
+				  FilmoviDAO.add(film);
+				 
 				break;
 			}
 			case "update": {
@@ -72,7 +70,7 @@ public class FilmoviServlet extends HttpServlet {
 
 				String naziv = request.getParameter("naziv");
 				naziv = (!"".equals(naziv) ? naziv : film.getNaziv());
-
+				
 				String reziser = request.getParameter("reziser");
 				reziser = (!"".equals(reziser) ? reziser : film.getReziser());
 

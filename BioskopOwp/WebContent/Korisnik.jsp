@@ -16,12 +16,16 @@
 		</tr>	
 
 			<tr>
-				<td>${korisnik.korisnickoIme}</a></td>
+				<td>${korisnik.korisnickoIme}</td>
 				<td>${korisnik.datumRegistracije}</td>
 				<td>${korisnik.role}</td>
 			</tr>
 					
 	</table>
-
+		<form action="KorisniciServlet" method="post">
+			<input type="hidden" name="action" value="delete"/>
+			<input type="hidden" name="korisnickoIme" value="${korisnik.korisnickoIme}"/>
+			<tr><td/><td><input type="submit" value="Obrisi"></td></tr>
+		</form>
 </body>
 </html>

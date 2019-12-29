@@ -43,8 +43,12 @@
 			
 		</c:forEach>		
 	</table>
-		<a href="AddFilm.html">Dodaj film</a>
-		
-		<a href="KorisniciServlet">Korisnici</a>
+		<p>
+		<a href="DodajFilm.html">Dodaj film</a><br/>
+		<br/>
+		<a href="KorisniciServlet">Korisnici</a><br/>
+		<br/>	
+		<a href="Register.html">Registracija</a>
+		</p>
 </body>
 </html>

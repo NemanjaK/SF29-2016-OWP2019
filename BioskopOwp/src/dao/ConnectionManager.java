@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionManager {
-	private static final String DATABASE = "127.0.0.1:3306/bioskop";
+	private static final String DATABASE = "localhost:3306/bioskop";
 	private static final String USER_NAME = "root";
 	private static final String PASSWORD = "root";
 

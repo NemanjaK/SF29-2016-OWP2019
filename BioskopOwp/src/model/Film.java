@@ -8,7 +8,7 @@ public class Film {
 	private String glumci;
 	private String zanrovi;
 	private String distributer;
-	private int godinaProizvodnje;
+	private Integer godinaProizvodnje;
 	private String opis;
 	private int trajanje;
 	private String zemljaPorekla;
@@ -19,27 +19,12 @@ public class Film {
 	
 	
 	
-	
-
-	public Film(int id, String naziv, String reziser, String glumci, String zanrovi, String distributer, String opis,
-			String zemljaPorekla) {
-		super();
-		this.id = id;
-		this.naziv = naziv;
-		this.reziser = reziser;
-		this.glumci = glumci;
-		this.zanrovi = zanrovi;
-		this.distributer = distributer;
-		this.opis = opis;
-		this.zemljaPorekla = zemljaPorekla;
-	}
-
 
 
 
 
 	public Film(int id, String naziv, String reziser, String glumci, String zanrovi, String distributer,
-			int godinaProizvodnje, String opis, int trajanje, String zemljaPorekla) {
+			Integer godinaProizvodnje, String opis, int trajanje, String zemljaPorekla) {
 		super();
 		this.id = id;
 		this.naziv = naziv;
@@ -103,11 +88,11 @@ public class Film {
 		this.distributer = distributer;
 	}
 
-	public int getGodinaProizvodnje() {
+	public Integer getGodinaProizvodnje() {
 		return godinaProizvodnje;
 	}
 
-	public void setGodinaProizvodnje(int godinaProizvodnje) {
+	public void setGodinaProizvodnje(Integer godinaProizvodnje) {
 		this.godinaProizvodnje = godinaProizvodnje;
 	}
 

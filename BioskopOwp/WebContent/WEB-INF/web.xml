@@ -67,4 +67,14 @@
     <servlet-name>KorisnikServlet</servlet-name>
     <url-pattern>/KorisnikServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RegistracijaServlet</display-name>
+    <servlet-name>RegistracijaServlet</servlet-name>
+    <servlet-class>servlet.RegistracijaServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegistracijaServlet</servlet-name>
+    <url-pattern>/RegistracijaServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

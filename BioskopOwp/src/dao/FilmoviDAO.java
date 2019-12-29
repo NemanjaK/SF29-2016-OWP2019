@@ -187,6 +187,7 @@ public class FilmoviDAO {
 			pstmt.setString(index++, film.getOpis());
 			pstmt.setInt(index++, film.getTrajanje());
 			pstmt.setString(index++, film.getZemljaPorekla());
+			
 			System.out.println(pstmt);
 
 			return pstmt.executeUpdate() == 1;

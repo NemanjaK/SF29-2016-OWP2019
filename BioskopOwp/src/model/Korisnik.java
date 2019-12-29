@@ -1,24 +1,25 @@
 package model;
 
+import java.sql.Timestamp;
+
 public class Korisnik {
 
 	public enum Role {NEPRIJAVLJEN_KORISNIK, KORISNIK, ADMIN}
 
 	private String korisnickoIme;
-	private String password;
-	private String datumRegistracije;
+	private String lozinka;
+	private Timestamp datumRegistracije;
 	private Role role;
-
-	public Korisnik() {
-
-	}
-
-	public Korisnik(String korisnickoIme, String password, String datumRegistracije, Role role) {
+	
+	public Korisnik(String korisnickoIme, String lozinka, Timestamp datumRegistracije, Role role) {
 		super();
 		this.korisnickoIme = korisnickoIme;
-		this.password = password;
+		this.lozinka = lozinka;
 		this.datumRegistracije = datumRegistracije;
 		this.role = role;
+	}
+
+	public Korisnik() {
 	}
 
 	public String getKorisnickoIme() {
@@ -29,19 +30,19 @@ public class Korisnik {
 		this.korisnickoIme = korisnickoIme;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getLozinka() {
+		return lozinka;
 	}
 
-	public void setLozinka(String password) {
-		this.password = password;
-	}
+	public void setLozinka(String lozinka) {
+		this.lozinka = lozinka;
+	}	
 
-	public String getDatumRegistracije() {
+	public Timestamp getDatumRegistracije() {
 		return datumRegistracije;
 	}
 
-	public void setDatumRegistracije(String datumRegistracije) {
+	public void setDatumRegistracije(Timestamp datumRegistracije) {
 		this.datumRegistracije = datumRegistracije;
 	}
 
@@ -52,5 +53,7 @@ public class Korisnik {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-
+	
+	
 }
+
