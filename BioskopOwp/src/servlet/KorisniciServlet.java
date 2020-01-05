@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import dao.FilmoviDAO;
 import dao.KorisnikDAO;
 import model.Film;
 import model.Korisnik;
+import model.Korisnik.Role;
 
 @SuppressWarnings("serial")
 public class KorisniciServlet extends HttpServlet {
@@ -26,16 +28,28 @@ public class KorisniciServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		
 		try {
 
 			String action = request.getParameter("action");
 			switch (action) {
 			case "update": {
+				
+				String korisnickoIme = request.getParameter("korisnickoIme");
+				
+				String newKorisnickoIme = request.getParameter("newKorisnickoIme");
 
-				/*String korisnickoIme = request.getParameter("korisnickoIme");
 				Korisnik korisnik = KorisnikDAO.getOne(korisnickoIme);
-
-				String lozinka = request.getParameter("lozinka");	*/
+								
+				String role = request.getParameter("role");			
+				Role newRole = Role.valueOf(role);
+				
+	
+				korisnik.setKorisnickoIme(newKorisnickoIme);
+				korisnik.setRole(newRole);
+				
+				KorisnikDAO.update(korisnik);
+			
 				break;
 			}
 			case "delete": {

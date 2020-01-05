@@ -11,6 +11,13 @@ public class Korisnik {
 	private Timestamp datumRegistracije;
 	private Role role;
 	
+	public Korisnik(String korisnickoIme, String lozinka,  Role role) {
+		super();
+		this.korisnickoIme = korisnickoIme;
+		this.lozinka = lozinka;
+		this.role = role;
+	}
+	
 	public Korisnik(String korisnickoIme, String lozinka, Timestamp datumRegistracije, Role role) {
 		super();
 		this.korisnickoIme = korisnickoIme;

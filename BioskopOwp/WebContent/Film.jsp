@@ -1,13 +1,31 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:if test="${ulogovanKorisnickoIme == null}">
+	<c:redirect url="Login.html"/>
+</c:if>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Film</title>
+<title>${film.naziv}</title>
 </head>
 	<body>
-		<table>
+	<c:choose>
+		<c:when test="${ulogovanKorisnikRole == 'KORISNIK'}">
+			<table>
+				<tr><td align="right"><b>Naziv:</b></td><td>${film.naziv}</td></tr>			
+				<tr><td align="right"><b>Trajanje:</b></td><td>${film.trajanje}</td></tr>
+				<tr><td align="right"><b>Distributer:</b></td><td>${film.distributer}</td></tr>
+				<tr><td align="right"><b>Reziser:</b></td><td>${film.reziser}</td></tr>
+				<tr><td align="right"><b>Zemlja porekla:</b></td><td>${film.zemljaPorekla}</td></tr>
+				<tr><td align="right"><b>Godina proizvodnje:</b></td><td>${film.godinaProizvodnje}</td></tr>
+				<tr><td align="right"><b>Glumci:</b></td><td>${film.glumci}</td></tr>
+				<tr><td align="right"><b>Opis:</b></td><td>${film.opis}</td></tr>
+				<tr><td align="right"><b>Zanrovi:</b></td><td>${film.zanrovi}</td></tr>
+			</table>
+		</c:when>
+	<c:when test="${ulogovanKorisnikRole == 'ADMIN'}">	
+		<table>	
 			<form action="FilmoviServlet" method="post">
 				<input type="hidden" name="action" value="update"/>
 				<input type="hidden" name="id" value="${film.id}"/>				
@@ -28,5 +46,12 @@
 					<tr><td/><td><input type="submit" value="Obrisi"></td>
 				</form>		
 		</table>
+		</c:when>
+		<c:otherwise>
+		</c:otherwise>
+		</c:choose>
+		<p>
+			<a href="FilmoviServlet">Povratak</a>
+		</p>
 	</body>
 </html>
