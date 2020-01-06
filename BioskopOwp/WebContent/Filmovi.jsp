@@ -23,8 +23,18 @@
 		</tr>
 		<form action="FilmoviServlet" method="get">
 			<tr bgcolor="lightgrey">
+				<td align="center"><input type="text" name="nazivFilter" value="${film.naziv}"><input type="submit" value="Pretrazi"></td>
 				<td align="center">
-				<input type="text" name="nazivFilter" value="${film.naziv}"><input type="submit" value="Pretrazi"></td>
+					od:&nbsp;<input type="text" name="minTrajanjeFilter" value="${minTrajanje}"><br/>
+					do:&nbsp;<input type="text" name="maxTrajanjeFilter" value="${maxTrajanje}">
+				</td>
+				<td align="center"><input type="text" name="distributerFilter" value="${film.distributer}"><input type="submit" value="Pretrazi"></td>
+				<td align="center"><input type="text" name="zemljaPoreklaFilter" value="${film.zemljaPorekla}"><input type="submit" value="Pretrazi"></td>
+				<td align="center">
+					od:&nbsp;<input type="text" name="minGodinaProizvodnjeFilter" value="${minGodinaProizvodnje}"><br/>
+					do:&nbsp;<input type="text" name="maxGodinaProizvodnjeFilter" value="${maxGodinaProizvodnje}">
+				</td>
+				<td align="center"><input type="text" name="zanroviFilter" value="${film.zanrovi}"><input type="submit" value="Pretrazi"></td>								
 			</tr>
 		</form>
 		<c:forEach var="film" items="${filmovi}">

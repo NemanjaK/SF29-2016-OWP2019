@@ -34,8 +34,45 @@ public class FilmoviServlet extends HttpServlet {
 			}
 			String naziv = request.getParameter("nazivFilter");
 			naziv = (naziv != null ? naziv : "");
+			
+			int minTrajanje = 0;
+			try {
+				String minTrajanjeFilter = request.getParameter("minTrajanjeFilter");
+				minTrajanje = Integer.parseInt(minTrajanjeFilter);
+				minTrajanje = (minTrajanje >= 0? minTrajanje: 0);
+			} catch (Exception ex) {}
+			int maxTrajanje = Integer.MAX_VALUE;
+			try {
+				String maxTrajanjeFilter = request.getParameter("maxTrajanjeFilter");
+				maxTrajanje = Integer.parseInt(maxTrajanjeFilter);
+				maxTrajanje = (maxTrajanje >= 0? maxTrajanje: Integer.MAX_VALUE);
+			} catch (Exception ex) {}
+	
+			
+			int minGodinaProizvodnje = 0;
+			try {
+				String minGodinaProizvodnjeFilter = request.getParameter("minGodinaProizvodnjeFilter");
+				minGodinaProizvodnje = Integer.parseInt(minGodinaProizvodnjeFilter);
+				minGodinaProizvodnje = (minGodinaProizvodnje >= 0? minGodinaProizvodnje: 0);
+			} catch (Exception ex) {}
+			int maxGodinProizvodnje = Integer.MAX_VALUE;
+			try {
+				String maxGodinProizvodnjeFilter = request.getParameter("maxGodinProizvodnjeFilter");
+				maxGodinProizvodnje = Integer.parseInt(maxGodinProizvodnjeFilter);
+				maxGodinProizvodnje = (maxGodinProizvodnje >= 0? maxGodinProizvodnje: Integer.MAX_VALUE);
+			} catch (Exception ex) {}
+	
+			
+			String zanrovi = request.getParameter("zanroviFilter");
+			zanrovi = (zanrovi != null ? zanrovi : "");
+					
+			String distributer = request.getParameter("distributerFilter");
+			distributer = (distributer != null ? distributer : "");
+			
+			String zemljaPorekla = request.getParameter("zemljaPoreklaFilter");
+			zemljaPorekla = (zemljaPorekla != null ? zemljaPorekla : "");
 
-			List<Film> filmovi = FilmoviDAO.getAll(naziv);
+			List<Film> filmovi = FilmoviDAO.getAll(naziv, zanrovi, distributer, zemljaPorekla, minTrajanje, maxTrajanje, minGodinaProizvodnje, maxGodinProizvodnje);
 			
 			request.setAttribute("ulogovanKorisnikRole", ulogovanKorisnik.getRole());
 			request.setAttribute("filmovi", filmovi);

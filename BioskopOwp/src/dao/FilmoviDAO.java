@@ -11,7 +11,7 @@ import model.Film;
 
 public class FilmoviDAO {
 
-	public static List<Film> getAll(String naziv)  {
+	public static List<Film> getAll(String naziv, String zanrovi, String distributer, String zemljaPorekla, int minTrajanje, int maxTrajanje, int minGodinaProizvodnje, int maxGodinaProizvodnje)  {
 		List<Film> filmovi = new ArrayList<>();
 
 		Connection conn = ConnectionManager.getConnection();
@@ -20,11 +20,23 @@ public class FilmoviDAO {
 		ResultSet rset = null;
 
 		try {
-			String query = "SELECT * FROM film WHERE naziv LIKE ?";
+			String query = "SELECT * FROM film WHERE naziv LIKE ? AND zanrovi LIKE ? AND distributer LIKE ? AND zemljaPorekla LIKE ? "
+					+ "AND trajanje >= ? AND trajanje <= ? AND godinaProizvodnje >= ? and godinaProizvodnje <=?";
 
 			pstmt = conn.prepareStatement(query);
 			int index = 1;
 			pstmt.setString(index++, "%" + naziv + "%");
+			pstmt.setString(index++, "%" + zanrovi + "%");
+			pstmt.setString(index++, "%" + distributer + "%");
+			pstmt.setString(index++, "%" + zemljaPorekla + "%");
+			pstmt.setInt(index++, minTrajanje);
+			pstmt.setInt(index++, maxTrajanje);
+			pstmt.setInt(index++, minGodinaProizvodnje);
+			pstmt.setInt(index++, maxGodinaProizvodnje);
+
+
+
+
 			System.out.println(pstmt);
 
 			
@@ -36,15 +48,15 @@ public class FilmoviDAO {
 				String nazivF = rset.getString(index++);
 				String reziser = rset.getString(index++);
 				String glumci = rset.getString(index++);
-				String zanrovi = rset.getString(index++);
-				String distributer = rset.getString(index++);
-				Integer godinaProizvodnje = rset.getInt(index++);
+				String zanroviF = rset.getString(index++);
+				String distributerF = rset.getString(index++);
+				Integer godinaProizvodnjeF = rset.getInt(index++);
 				String opis = rset.getString(index++);
-				Integer trajanje = rset.getInt(index++);
-				String zemljaPorekla = rset.getString(index++);
+				Integer trajanjeF = rset.getInt(index++);
+				String zemljaPoreklaF = rset.getString(index++);
 
-				Film film = new Film(id, nazivF, reziser, glumci, zanrovi, distributer, godinaProizvodnje, opis,
-						trajanje, zemljaPorekla);
+				Film film = new Film(id, nazivF, reziser, glumci, zanroviF, distributerF, godinaProizvodnjeF, opis,
+						trajanjeF, zemljaPoreklaF);
 				filmovi.add(film);
 			}
 			return filmovi;
