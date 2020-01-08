@@ -37,8 +37,13 @@
 					<input type="hidden" name="action" value="update"/>
 					<input type="hidden" name="korisnickoIme" value="${korisnik.korisnickoIme}"/>
 					<tr><td align="right">Korisnicko ime:</td><td><input type="text" name="newKorisnickoIme" value="${korisnik.korisnickoIme}"/></td></tr>
-					<tr><td align="right">Datum registracije:</td><td><input type="text" name="datumRegistracije" value="${korisnik.datumRegistracije}"/></td></tr>
-					<tr><td align="right">Uloga:</td><td><input type="text" name="role" value="${korisnik.role}"/></td></tr>
+					<tr><td align="right">Datum registracije:</td><td>${korisnik.datumRegistracije}"</td></tr>
+					<tr><td align="right">Uloga:</td><td>
+						<select name="role"/>
+							<option value="ADMIN">ADMIN</option>
+							<option value="KORISNIK">KORISNIK</option>
+						</select>
+					</td></tr>
 					<tr><td/><td><input type="submit" value="Izmeni"></td></tr>
 				</form>
 				<form action="KorisniciServlet" method="post">

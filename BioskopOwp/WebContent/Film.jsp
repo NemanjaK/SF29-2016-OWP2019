@@ -23,6 +23,18 @@
 				<tr><td align="right"><b>Opis:</b></td><td>${film.opis}</td></tr>
 				<tr><td align="right"><b>Zanrovi:</b></td><td>${film.zanrovi}</td></tr>
 			</table>
+			
+			<p>
+			
+			<c:if test="${ulogovanKorisnikRole == 'KORISNIK'}">
+			<a href="KorisnikServlet">Profil</a><br /> <br />
+			</c:if>
+			
+			<c:if test="${ulogovanKorisnikRole == 'KORISNIK'}">
+			<a href="LogoutServlet">Odjava</a><br/> <br />
+			</c:if>
+			</p>
+			
 		</c:when>
 	<c:when test="${ulogovanKorisnikRole == 'ADMIN'}">	
 		<table>	
@@ -44,7 +56,12 @@
 					<input type="hidden" name="action" value="delete"/>
 					<input type="hidden" name="id" value="${film.id}"/>
 					<tr><td/><td><input type="submit" value="Obrisi"></td>
-				</form>		
+				</form>	
+			<p>	
+			<c:if test="${ulogovanKorisnikRole == 'ADMIN'}">
+			<a href="KorisniciServlet">Upravljanje korisnicima</a><br /> <br />
+			</c:if>	
+			</p>
 		</table>
 		</c:when>
 		<c:otherwise>

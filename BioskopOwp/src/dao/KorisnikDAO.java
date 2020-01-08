@@ -125,12 +125,6 @@ public class KorisnikDAO {
 			pstmt.setString(index++, korisnik.getKorisnickoIme());
 			pstmt.setString(index++, korisnik.getLozinka());
 			pstmt.setTimestamp(index++, korisnik.getDatumRegistracije());
-			/*
-			 * java.util.Date myDate =
-			 * DateConverter.stringToDateForWrite(korisnik.getDatumRegistracije());
-			 * java.sql.Date date = new java.sql.Date(myDate.getTime());
-			 * pstmt.setDate(index++, date);
-			 */
 			pstmt.setString(index++, korisnik.getRole().toString());
 			System.out.println(pstmt);
 
@@ -162,21 +156,22 @@ public class KorisnikDAO {
 		return false;
 	}
 	
-	public static boolean update(Korisnik korisnik) throws Exception {
+	public static boolean updateKorisnika(Korisnik korisnik, String updatedKosrisnickoIme) throws Exception {
 		Connection conn = ConnectionManager.getConnection();
 
 		PreparedStatement pstmt = null;
 
 		try {
-			String query = "UPDATE korisnik SET korisnickoIme = ?, uloga = ? WHERE korisnickoIme = ?";
+			if(updatedKosrisnickoIme == null || updatedKosrisnickoIme.isEmpty()) {
+				return false;
+			}
+			String query = "UPDATE korisnik SET korisnickoIme = '" + updatedKosrisnickoIme +"', uloga = ? WHERE korisnickoIme = ?";
 
 			pstmt = conn.prepareStatement(query);
 
 			int index = 1;
-			pstmt.setString(index++, korisnik.getKorisnickoIme());
 			pstmt.setString(index++, korisnik.getRole().toString());
 			pstmt.setString(index++, korisnik.getKorisnickoIme());
-
 
 			System.out.println(pstmt);
 

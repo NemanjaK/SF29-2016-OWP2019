@@ -135,7 +135,7 @@ public class FilmoviServlet extends HttpServlet {
 				zanrovi = (!"".equals(zanrovi) ? zanrovi : film.getZanrovi());
 
 				String distributer = request.getParameter("distributer");
-				distributer = (!"".equals(distributer) ? naziv : film.getDistributer());
+				distributer = (!"".equals(distributer) ? distributer : film.getDistributer());
 
 				int godinaProizvodnje = Integer.parseInt(request.getParameter("godinaProizvodnje"));
 				godinaProizvodnje = (godinaProizvodnje > 0 ? godinaProizvodnje : film.getGodinaProizvodnje());
@@ -148,15 +148,15 @@ public class FilmoviServlet extends HttpServlet {
 
 				String zemljaPorekla = request.getParameter("zemljaPorekla");
 				zemljaPorekla = (!"".equals(zemljaPorekla) ? zemljaPorekla : film.getZemljaPorekla());
-
-				film.setDistributer(distributer);
-				film.setGlumci(glumci);
-				film.setGodinaProizvodnje(godinaProizvodnje);
+				
 				film.setNaziv(naziv);
-				film.setOpis(opis);
-				film.setReziser(reziser);
-				film.setTrajanje(trajanje);
+				film.setReziser(reziser);		
+				film.setGlumci(glumci);
 				film.setZanrovi(zanrovi);
+				film.setDistributer(distributer);
+				film.setGodinaProizvodnje(godinaProizvodnje);
+				film.setOpis(opis);
+				film.setTrajanje(trajanje);
 				film.setZemljaPorekla(zemljaPorekla);
 				FilmoviDAO.update(film);
 

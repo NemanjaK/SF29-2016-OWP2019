@@ -36,19 +36,16 @@ public class KorisniciServlet extends HttpServlet {
 			case "update": {
 				
 				String korisnickoIme = request.getParameter("korisnickoIme");
-				
-				String newKorisnickoIme = request.getParameter("newKorisnickoIme");
-
 				Korisnik korisnik = KorisnikDAO.getOne(korisnickoIme);
+				
+				String updatedKosrisnickoIme = request.getParameter("newKorisnickoIme");
 								
 				String role = request.getParameter("role");			
 				Role newRole = Role.valueOf(role);
 				
-	
-				korisnik.setKorisnickoIme(newKorisnickoIme);
 				korisnik.setRole(newRole);
 				
-				KorisnikDAO.update(korisnik);
+				KorisnikDAO.updateKorisnika(korisnik, updatedKosrisnickoIme);
 			
 				break;
 			}

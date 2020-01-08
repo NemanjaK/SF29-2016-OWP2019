@@ -1,9 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%-- <c:if test="${ulogovanKorisnickoIme == null}">
+<c:if test="${ulogovanKorisnickoIme == null}">
 	<c:redirect url="Login.html" />
-</c:if> --%>
+</c:if> 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,16 +52,17 @@
 	</table>
 		<p>
 		
-			<c:if test="${ulogovanKorisnikRole == 'NEPRIJAVLJEN_KORISNIK'}">
-			<a href="KorisnikServlet">Profil</a><br /> <br />
-			</c:if>
 			
 			<c:if test="${ulogovanKorisnikRole == 'KORISNIK'}">
 			<a href="KorisnikServlet">Profil</a><br /> <br />
 			</c:if>
 		
+			<c:if test="${ulogovanKorisnikRole == 'KORISNIK'}">
+			<a href="LogoutServlet">Odjava</a><br/> <br />
+			</c:if>
+					
 			<c:if test="${ulogovanKorisnikRole == 'ADMIN'}">
-			<a href="KorisniciServlet">Korisnici</a><br /> <br />
+			<a href="KorisniciServlet">Upravljanje korisnicima</a><br /> <br />
 			</c:if>
 			
 			<c:if test="${ulogovanKorisnikRole == 'ADMIN'}">
