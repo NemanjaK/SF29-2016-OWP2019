@@ -26,12 +26,14 @@ public class FilmoviServlet extends HttpServlet {
 			response.sendRedirect("./Login.html");
 			return;
 		}
+		
 		try {
 			Korisnik ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
 			if (ulogovanKorisnik == null) {
 				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
 				return;
 			}
+
 			String naziv = request.getParameter("nazivFilter");
 			naziv = (naziv != null ? naziv : "");
 			
@@ -73,6 +75,8 @@ public class FilmoviServlet extends HttpServlet {
 			zemljaPorekla = (zemljaPorekla != null ? zemljaPorekla : "");
 
 			List<Film> filmovi = FilmoviDAO.getAll(naziv, zanrovi, distributer, zemljaPorekla, minTrajanje, maxTrajanje, minGodinaProizvodnje, maxGodinProizvodnje);
+					
+		
 			
 			request.setAttribute("ulogovanKorisnikRole", ulogovanKorisnik.getRole());
 			request.setAttribute("filmovi", filmovi);
@@ -99,8 +103,7 @@ public class FilmoviServlet extends HttpServlet {
 				String zanrovi = request.getParameter("zanrovi");
 
 				String distributer = request.getParameter("distributer");
-				System.out.println(request.getParameter("godinaProizvodnje") + "++++++++++++");
-
+				
 				Integer godinaProizvodnje = Integer.parseInt(request.getParameter("godinaProizvodnje"));
 
 				String opis = request.getParameter("opis");

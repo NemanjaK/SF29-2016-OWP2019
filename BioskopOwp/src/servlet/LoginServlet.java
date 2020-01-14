@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
 			request.getSession().setAttribute("ulogovanDatumRegistracije", korisnik.getDatumRegistracije());
 			request.getSession().setAttribute("ulogovanRole", korisnik.getRole());
 
-			response.sendRedirect("./FilmoviServlet");
+			response.sendRedirect("./ProjekcijeServlet");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
