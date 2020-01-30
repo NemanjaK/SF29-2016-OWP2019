@@ -1,13 +1,15 @@
 package model;
 
+
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class Projekcija {
 	
 	private int id;
 	private TipProjekcije tipProjekcije;
 	private Sala sala;
-	private Timestamp datumVreme;
+	private Date datumVreme;
 	private double cenaKarte;
 	private Korisnik adminDodaoProjekciju;
 	private Film prikazaniFilm;
@@ -18,7 +20,7 @@ public class Projekcija {
 	
 	
 	
-	public Projekcija(int id, TipProjekcije tipProjekcije, Sala sala, Timestamp datumVreme, double cenaKarte,
+	public Projekcija(int id, TipProjekcije tipProjekcije, Sala sala, Date datumVreme, double cenaKarte,
 			Korisnik adminDodaoProjekciju, Film prikazaniFilm) {
 		super();
 		this.id = id;
@@ -56,11 +58,11 @@ public class Projekcija {
 		this.sala = sala;
 	}
 
-	public Timestamp getDatumVreme() {
+	public Date getDatumVreme() {
 		return datumVreme;
 	}
 
-	public void setDatumVreme(Timestamp datumVreme) {
+	public void setDatumVreme(Date datumVreme) {
 		this.datumVreme = datumVreme;
 	}
 
@@ -87,6 +89,17 @@ public class Projekcija {
 	public void setPrikazaniFilm(Film prikazaniFilm) {
 		this.prikazaniFilm = prikazaniFilm;
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "Projekcija [id=" + id + ", tipProjekcije=" + tipProjekcije + ", sala=" + sala + ", datumVreme="
+				+ datumVreme + ", cenaKarte=" + cenaKarte + ", adminDodaoProjekciju=" + adminDodaoProjekciju
+				+ ", prikazaniFilm=" + prikazaniFilm + "]";
+	}
+	
+	
 	
 	
 	

@@ -17,7 +17,7 @@
 			<th>Korisnicko ime</th>
 			<th>Film</th>
 		</tr>	
-		<form action="ProjekcijeServlet" method="get">
+	<form action="ProjekcijeServlet" method="get">
 			<tr bgcolor="lightgrey">
 			<td></td>
 			<td></td>
@@ -29,7 +29,7 @@
 			<td></td>
 			<td></td>
 			</tr>
-		</form>
+		</form> 
 		<c:forEach var="projekcija" items="${projekcije}">
 		<tr>
 			<td>${projekcija.tipProjekcije.naziv}</td>
@@ -37,7 +37,7 @@
 			<td><a href="ProjekcijaServlet?id=${projekcija.id}">${projekcija.datumVreme}</a></td>
 			<td>${projekcija.cenaKarte}</td>
 			<td>${projekcija.adminDodaoProjekciju.korisnickoIme}</td>
-			<td><a href="FilmServlet?id=${film.id}">${projekcija.prikazaniFilm.naziv}</a></td>
+			<td><a href="FilmServlet?id=${projekcija.prikazaniFilm.id}">${projekcija.prikazaniFilm.naziv}</a></td>
 		</tr>
 		</c:forEach>
 		
@@ -45,15 +45,15 @@
 	
 			<a href="FilmoviServlet">Filmovi</a><br /> <br />
 	
-			<c:if test="${ulogovanKorisnikRole == 'KORISNIK'}">
+			<c:if test="${ulogovanKorisnikRole.role == 'KORISNIK'}">
 			<a href="KorisnikServlet">Profil</a><br /> <br />
 			</c:if>
 		
-			<c:if test="${ulogovanKorisnikRole == 'KORISNIK'}">
+			<c:if test="${ulogovanKorisnikRole.role == 'KORISNIK'}">
 			<a href="LogoutServlet">Odjava</a><br/> <br />
 			</c:if>
 					
-			<c:if test="${ulogovanKorisnikRole == 'ADMIN'}">
+			<c:if test="${ulogovanKorisnikRole.role == 'ADMIN'}">
 			<a href="KorisniciServlet">Upravljanje korisnicima</a><br /> <br />
 			</c:if>
 	

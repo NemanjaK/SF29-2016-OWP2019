@@ -50,8 +50,8 @@ public class RegistracijaServlet extends HttpServlet {
 			System.out.println(formatter);
 			Timestamp datetime = new Timestamp(KorisnikDAO.DATETIME_FORMAT.parse(formatDateTime).getTime());
 
-			Korisnik korisnik = new Korisnik(korisnickoIme, lozinka, datetime, Role.KORISNIK);
-			KorisnikDAO.add(korisnik);
+			//Korisnik korisnik = new Korisnik(korisnickoIme, lozinka, datetime, Role.KORISNIK);
+			//KorisnikDAO.add(korisnik);
 			
 			response.sendRedirect("FilmoviServlet");
 		} catch (Exception ex) {

@@ -1,12 +1,14 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import model.Film;
@@ -15,7 +17,7 @@ import model.Korisnik.Role;
 
 public class KorisnikDAO {
 	
-	public static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	public static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 	public static Korisnik get(String korisnickoIme, String lozinka) {
 		Connection conn = ConnectionManager.getConnection();
@@ -47,7 +49,10 @@ public class KorisnikDAO {
 		return null;
 	}
 	
-	public static Korisnik getOne(String korisnickoIme) {
+	
+
+	
+	public static Korisnik getOne(String korisnickoIme) throws ParseException {
 
 		Connection conn = ConnectionManager.getConnection();
 		PreparedStatement pstmt = null;
@@ -59,14 +64,18 @@ public class KorisnikDAO {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, korisnickoIme);
 			rset = pstmt.executeQuery();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 			if (rset.next()) {
 				int index = 2;
 				String lozinka = rset.getString(index++);
-				Timestamp datumRegistracije = rset.getTimestamp(index++);
+				//System.out.println("!formated--Korisnik------------");
+				Date date = (Date) formatter.parse(rset.getString(index++));
+
+				//System.out.println("formated------Korisnik--------");
 				Role role = Role.valueOf(rset.getString(index++));
 
-				return new Korisnik(korisnickoIme, lozinka, datumRegistracije, role);
+				return new Korisnik(korisnickoIme, lozinka, date, role);
 			}
 		} catch (SQLException ex) {
 			System.out.println("Greska u SQL upitu!");
@@ -76,7 +85,7 @@ public class KorisnikDAO {
 		return null;
 	}
 
-	public static ArrayList<Korisnik> getAll() {
+	public static ArrayList<Korisnik> getAll() throws ParseException {
 
 		Connection conn = ConnectionManager.getConnection();
 		PreparedStatement pstmt = null;
@@ -87,16 +96,18 @@ public class KorisnikDAO {
 
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 			while (rset.next()) {
 				int index = 1;
 				String korisnickoIme = rset.getString(index++);
 				String password = rset.getString(index++);
-				//Date date = rset.getDate(index++);
-				Timestamp datumRegistracije = rset.getTimestamp(index++);
+				
+				Date date = (Date) formatter.parse(rset.getString(index++));
+
 				Role role = Role.valueOf(rset.getString(index++));
 
-				Korisnik korisnik = new Korisnik(korisnickoIme, password, datumRegistracije, role);
+				Korisnik korisnik = new Korisnik(korisnickoIme, password, date, role);
 				korisnici.add(korisnik);
 
 			}
@@ -124,7 +135,7 @@ public class KorisnikDAO {
 			int index = 1;
 			pstmt.setString(index++, korisnik.getKorisnickoIme());
 			pstmt.setString(index++, korisnik.getLozinka());
-			pstmt.setTimestamp(index++, korisnik.getDatumRegistracije());
+			//pstmt.setString(index++, korisnik.getDatumRegistracije());
 			pstmt.setString(index++, korisnik.getRole().toString());
 			System.out.println(pstmt);
 

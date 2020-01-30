@@ -1,6 +1,8 @@
 package model;
 
-import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Korisnik {
 
@@ -8,7 +10,7 @@ public class Korisnik {
 
 	private String korisnickoIme;
 	private String lozinka;
-	private Timestamp datumRegistracije;
+	private Date datumRegistracije;
 	private Role role;
 	
 	public Korisnik(String korisnickoIme, String lozinka,  Role role) {
@@ -18,7 +20,16 @@ public class Korisnik {
 		this.role = role;
 	}
 	
-	public Korisnik(String korisnickoIme, String lozinka, Timestamp datumRegistracije, Role role) {
+	
+	
+	public Korisnik(String korisnickoIme) {
+		super();
+		this.korisnickoIme = korisnickoIme;
+	}
+
+
+
+	public Korisnik(String korisnickoIme, String lozinka, Date datumRegistracije, Role role) {
 		super();
 		this.korisnickoIme = korisnickoIme;
 		this.lozinka = lozinka;
@@ -45,11 +56,15 @@ public class Korisnik {
 		this.lozinka = lozinka;
 	}	
 
-	public Timestamp getDatumRegistracije() {
-		return datumRegistracije;
-	}
+	public String getDatumRegistracije() {
+		String pattern = "MM/dd/yyyy";
+		DateFormat df = new SimpleDateFormat(pattern);
 
-	public void setDatumRegistracije(Timestamp datumRegistracije) {
+		return df.format(datumRegistracije);
+	}
+	
+
+	public void setDatumRegistracije(Date datumRegistracije) {
 		this.datumRegistracije = datumRegistracije;
 	}
 

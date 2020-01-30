@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet {
 			}
 			
 			request.getSession().setAttribute("ulogovanKorisnickoIme", korisnik.getKorisnickoIme());
-			request.getSession().setAttribute("ulogovanDatumRegistracije", korisnik.getDatumRegistracije());
+			//request.getSession().setAttribute("ulogovanDatumRegistracije", korisnik.getDatumRegistracije());
 			request.getSession().setAttribute("ulogovanRole", korisnik.getRole());
 
 			response.sendRedirect("./ProjekcijeServlet");

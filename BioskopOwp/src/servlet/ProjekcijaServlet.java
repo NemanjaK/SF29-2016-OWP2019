@@ -1,6 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.text.ParseException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +17,17 @@ public class ProjekcijaServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		int id = Integer.parseInt(request.getParameter("id"));
-		Projekcija projekcija = ProjekcijeDAO.getOne(id);
+		Projekcija projekcija;
+		try {
+			projekcija = ProjekcijeDAO.getOne(id);
+			request.setAttribute("projekcija", projekcija);
+			request.getRequestDispatcher("Projekcija.jsp").forward(request, response);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		request.setAttribute("projekcija", projekcija);
-		request.getRequestDispatcher("Projekcija.jsp").forward(request, response);
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

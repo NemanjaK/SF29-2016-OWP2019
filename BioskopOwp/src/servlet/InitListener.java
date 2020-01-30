@@ -10,7 +10,8 @@ import dao.ConnectionManager;
 public class InitListener implements ServletContextListener {
 	
     public void contextDestroyed(ServletContextEvent arg0)  { 
-        ConnectionManager.close();
+    	// TODO Auto-generated method stub
+
    }
 
    public void contextInitialized(ServletContextEvent event)  { 
