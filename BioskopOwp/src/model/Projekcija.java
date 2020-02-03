@@ -2,6 +2,8 @@ package model;
 
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Projekcija {
@@ -58,8 +60,11 @@ public class Projekcija {
 		this.sala = sala;
 	}
 
-	public Date getDatumVreme() {
-		return datumVreme;
+	public String getDatumVreme() {
+		String pattern = "MM/dd/yyyy HH:mm";
+		DateFormat df = new SimpleDateFormat(pattern);
+
+		return df.format(datumVreme);	
 	}
 
 	public void setDatumVreme(Date datumVreme) {

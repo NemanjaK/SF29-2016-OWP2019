@@ -23,7 +23,7 @@
 			<th>Zanrovi</th>
 		</tr>
 		<form action="FilmoviServlet" method="get">
-			<tr bgcolor="lightgrey">
+			<tr bgcolor="lightgrey">			
 				<td align="center"><input type="text" name="nazivFilter" value="${film.naziv}"><input type="submit" value="Pretrazi"></td>
 				<td align="center">
 					od:&nbsp;<input type="text" name="minTrajanjeFilter" value="${minTrajanje}"><br/>
@@ -37,6 +37,7 @@
 				</td>
 				<td align="center"><input type="text" name="zanroviFilter" value="${film.zanrovi}"><input type="submit" value="Pretrazi"></td>								
 			</tr>
+			
 		</form>
 		<c:forEach var="film" items="${filmovi}">
 			<tr>
@@ -52,6 +53,8 @@
 	</table>
 		<p>
 		
+			<a href="ProjekcijeServlet">Povratak na projekcije</a><br /> <br />
+			
 			
 			<c:if test="${ulogovanKorisnikRole == 'KORISNIK'}">
 			<a href="KorisnikServlet">Profil</a><br /> <br />

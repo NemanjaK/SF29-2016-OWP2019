@@ -19,15 +19,16 @@
 		</tr>	
 	<form action="ProjekcijeServlet" method="get">
 			<tr bgcolor="lightgrey">
-			<td></td>
-			<td></td>
+			<td align="center"><input type="text" name="sort"><input type="submit" value="Pretrazi"></td>		
+			<td align="center"><input type="text" name="tipProjkecijeFilter"><input type="submit" value="Pretrazi"></td>
+			<td align="center"><input type="text" name="salaFilter"><input type="submit" value="Pretrazi"></td>
 			<td></td>
 			<td align="center">
-					od:&nbsp;<input type="text" name="minCenaKarteFilter" value="${minCenaKarte}"><br/>
+					od:&nbsp;<input type="text" name="minCenaKarteFilter"><br/>
 					do:&nbsp;<input type="text" name="maxCenaKarteFilter" value="${maxCenaKarte}"><input type="submit" value="Pretrazi">
 			</td>
 			<td></td>
-			<td></td>
+			<td align="center"><input type="text" name="nazivFilmaFilter"><input type="submit" value="Pretrazi"></td>
 			</tr>
 		</form> 
 		<c:forEach var="projekcija" items="${projekcije}">
@@ -55,6 +56,11 @@
 					
 			<c:if test="${ulogovanKorisnikRole.role == 'ADMIN'}">
 			<a href="KorisniciServlet">Upravljanje korisnicima</a><br /> <br />
+			</c:if>
+			
+			<c:if test="${ulogovanKorisnikRole.role == 'ADMIN'}">
+				<a href="AddProjekcija.html">Dodaj projekciju</a>
+				<br />
 			</c:if>
 	
 </body>

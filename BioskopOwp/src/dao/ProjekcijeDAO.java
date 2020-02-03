@@ -21,7 +21,7 @@ import model.TipProjekcije;
 
 public class ProjekcijeDAO {
 	
-	public static List<Projekcija> getAll() throws ParseException {
+	public static List<Projekcija> getAll(double minCenaKarte, double maxCenaKarte, String nazivFilm, String tipProjekcije, String sala) throws ParseException {
 
 		Connection conn = ConnectionManager.getConnection();
 
@@ -37,12 +37,19 @@ public class ProjekcijeDAO {
 					"join film on film.id = projekcija.film_id\n" + 
 					"join tipProjekcije on tipProjekcije.id = projekcija.tipProjekcije_id\n" + 
 					"join sala on sala.id = projekcija.sala_id\n" + 
-					"join korisnik on korisnik.korisnickoIme = projekcija.korisnickoIme;";
+					"join korisnik on korisnik.korisnickoIme = projekcija.korisnickoIme\n" + 
+					"WHERE projekcija.cenaKarte >= ? AND projekcija.cenaKarte <= ? AND film.naziv LIKE ?\n" + 
+					"AND tipProjekcije.naziv LIKE ? AND sala.naziv LIKE ?";
 
 			pstmt = conn.prepareStatement(query);
 			int index = 1;
-			//pstmt.setDouble(index++, minCenaKarte);
-			//pstmt.setDouble(index++, maxCenaKarte);			
+			pstmt.setDouble(index++, minCenaKarte);
+			pstmt.setDouble(index++, maxCenaKarte);
+			pstmt.setString(index++, "%" + nazivFilm + "%");
+			pstmt.setString(index++, "%" + tipProjekcije + "%");
+			pstmt.setString(index++, "%" + sala + "%");
+
+
 				
 			System.out.println(pstmt);
 
@@ -55,21 +62,21 @@ public class ProjekcijeDAO {
 				Date date = (Date) formatter.parse(rset.getString(index++));
 							
 				Integer idFilm = rset.getInt(index++);
-				String nazivFilm = rset.getString(index++);
-				Film film = new Film(idFilm, nazivFilm);
+				String nazivFilmA = rset.getString(index++);
+				Film film = new Film(idFilm, nazivFilmA);
 							
 				Integer idTipProjekcije = rset.getInt(index++);
 				String nazivProjekcije = rset.getString(index++);				
-				TipProjekcije tipProjekcije = new TipProjekcije(idTipProjekcije, nazivProjekcije);
+				TipProjekcije tipProjekcijeP = new TipProjekcije(idTipProjekcije, nazivProjekcije);
 				
 				Integer idSala = rset.getInt(index++);
 				String nazivSale = rset.getString(index++);
-				Sala sala = new Sala(idSala, nazivSale);
+				Sala salaP = new Sala(idSala, nazivSale);
 								
 				String korisnickoIme = rset.getString(index++);
 				Korisnik korisnik = new Korisnik(korisnickoIme);
 						
-				Projekcija projekcija = new Projekcija(id, tipProjekcije, sala, date, cenaKarte, korisnik, film);
+				Projekcija projekcija = new Projekcija(id, tipProjekcijeP, salaP, date, cenaKarte, korisnik, film);
 				projekcije.add(projekcija);
 				
 			}
@@ -146,7 +153,12 @@ public class ProjekcijeDAO {
 		ResultSet rset = null;
 
 		try {
-			String query = "SELECT * FROM projekcija WHERE id = ?";
+			String query = "select projekcija.id, projekcija.cenaKarte, projekcija.vremePrikazivanja, film.id, film.naziv,tipProjekcije.id, tipProjekcije.naziv, sala.id, sala.naziv, korisnik.korisnickoIme\n" + 
+					"from projekcija \n" + 
+					"join film on film.id = projekcija.film_id\n" + 
+					"join tipProjekcije on tipProjekcije.id = projekcija.tipProjekcije_id\n" + 
+					"join sala on sala.id = projekcija.sala_id\n" + 
+					"join korisnik on korisnik.korisnickoIme = projekcija.korisnickoIme where projekcija.id = ?;";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, id);
@@ -158,20 +170,26 @@ public class ProjekcijeDAO {
 
 			if (rset.next()) {
 				int index = 2;
-				Integer tipProjekcije = rset.getInt(index++);
-				TipProjekcije tp = tipProjekcijeDAO.getOne(tipProjekcije);
-				Integer sala = rset.getInt(index++);
-				Sala sl = SalaDAO.getOne(sala);
-				Date date = (Date) formatter.parse(rset.getString(index++));
-
 				Double cenaKarte = rset.getDouble(index++);
-				String adminDdodaoProjekciju = rset.getString(index++);
-				Korisnik ap = KorisnikDAO.getOne(adminDdodaoProjekciju);
-				Integer prikazaniFilm = rset.getInt(index++);
-				Film pf = FilmoviDAO.getOne(prikazaniFilm);
-
-				return new Projekcija(id, tp, sl, date, cenaKarte, ap, pf);
-
+				Date date = (Date) formatter.parse(rset.getString(index++));
+							
+				Integer idFilm = rset.getInt(index++);
+				String nazivFilm = rset.getString(index++);
+				Film film = new Film(idFilm, nazivFilm);
+							
+				Integer idTipProjekcije = rset.getInt(index++);
+				String nazivProjekcije = rset.getString(index++);				
+				TipProjekcije tipProjekcije = new TipProjekcije(idTipProjekcije, nazivProjekcije);
+				
+				Integer idSala = rset.getInt(index++);
+				String nazivSale = rset.getString(index++);
+				Sala sala = new Sala(idSala, nazivSale);
+								
+				String korisnickoIme = rset.getString(index++);
+				Korisnik korisnik = new Korisnik(korisnickoIme);
+						
+				Projekcija projekcija = new Projekcija(id, tipProjekcije, sala, date, cenaKarte, korisnik, film);
+				return projekcija;
 			}
 		} catch (SQLException ex) {
 			System.out.println("Greska u SQL upitu A!");
@@ -179,6 +197,68 @@ public class ProjekcijeDAO {
 
 		}
 		return null;
+	}
+	
+	public static boolean add(Projekcija projekcija) throws Exception {
+
+		Connection conn = ConnectionManager.getConnection();
+		System.out.println("DAO++000++DAO");
+
+		PreparedStatement pstmt = null;
+		try {
+			String query = "INSERT INTO projekcija (id, tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id)"
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+			pstmt = conn.prepareStatement(query);
+			System.out.println("ASDASDAFSA");
+
+
+			int index = 1;
+			pstmt.setInt(index++, projekcija.getId());
+			pstmt.setInt(index++, projekcija.getTipProjekcije().getId());
+			pstmt.setInt(index++, projekcija.getSala().getId());
+			pstmt.setString(index++, projekcija.getDatumVreme());
+			pstmt.setDouble(index++, projekcija.getCenaKarte());
+			pstmt.setString(index++, projekcija.getAdminDodaoProjekciju().getKorisnickoIme());
+			System.out.println("xccxccc");
+
+			pstmt.setInt(index++, projekcija.getPrikazaniFilm().getId());
+			
+			System.out.println("sdadasd");
+
+			System.out.println(pstmt);
+
+			return pstmt.executeUpdate() == 1;
+
+		} catch (Exception ex) {
+			System.out.println("Greska SQL add");
+			ex.printStackTrace();
+		}finally {
+			try {pstmt.close();} catch (SQLException ex1) {ex1.printStackTrace();}
+		}		
+		return false;
+	}
+	
+	public static int getProjekcijaId() {
+		Connection conn = ConnectionManager.getConnection();
+		int id = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		try {
+			String query = "SELECT MAX(id) FROM projekcija";
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+
+			if (rset.next()) {
+				id = rset.getInt(1);
+
+			}
+			id++;
+			return id;
+		} catch (Exception ex) {
+			System.out.println("Greska u SQL upitu!");
+			ex.printStackTrace();
+		}
+		return 0;
 	}
 
 }

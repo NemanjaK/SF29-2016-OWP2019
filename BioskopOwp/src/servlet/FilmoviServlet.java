@@ -77,6 +77,7 @@ public class FilmoviServlet extends HttpServlet {
 
 			String zemljaPorekla = request.getParameter("zemljaPoreklaFilter");
 			zemljaPorekla = (zemljaPorekla != null ? zemljaPorekla : "");
+			
 
 			List<Film> filmovi = FilmoviDAO.getAll(naziv, zanrovi, distributer, zemljaPorekla, minTrajanje, maxTrajanje,
 					minGodinaProizvodnje, maxGodinProizvodnje);

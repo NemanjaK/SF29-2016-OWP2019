@@ -1,8 +1,9 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -30,30 +31,29 @@ public class RegistracijaServlet extends HttpServlet {
 		try {
 
 			String korisnickoIme = request.getParameter("korisnickoIme");
-			
-			 if(KorisnikDAO.getOne(korisnickoIme) !=null) 
-				 throw new Exception("Korisnicko ime vec postoji!"); 
-			 if("".equals(korisnickoIme)) 
-				 throw new Exception("Korisnicko ime je prazno!");
-					
-			 String lozinka = request.getParameter("lozinka");		
-			 if ("".equals(lozinka)) 
-				 throw new Exception("Lozinka je prazna!");
-			 
-			String ponovljenaLozinka = request.getParameter("ponovljenaLozinka");
-				if (!lozinka.equals(ponovljenaLozinka))
-					throw new Exception("Lozinke se ne podudaraju!");
-			 
-			LocalDateTime now = LocalDateTime.now();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-			String formatDateTime = now.format(formatter);
-			System.out.println(formatter);
-			Timestamp datetime = new Timestamp(KorisnikDAO.DATETIME_FORMAT.parse(formatDateTime).getTime());
 
+			if (KorisnikDAO.getOne(korisnickoIme) != null)
+				throw new Exception("Korisnicko ime vec postoji!");
+			if ("".equals(korisnickoIme))
+				throw new Exception("Korisnicko ime je prazno!");
+
+			String lozinka = request.getParameter("lozinka");
+			if ("".equals(lozinka))
+				throw new Exception("Lozinka je prazna!");
+
+			String ponovljenaLozinka = request.getParameter("ponovljenaLozinka");
+			if (!lozinka.equals(ponovljenaLozinka))
+				throw new Exception("Lozinke se ne podudaraju!");
+
+			/*
+			 * Date now = Date(); now.toString(); SimpleDateFormat formatter = new
+			 * SimpleDateFormat("yyyy-MM-dd"); System.out.println(formatter); Date datetime
+			 * = new Date(formatter.(now).getTime());
+			 */
 			//Korisnik korisnik = new Korisnik(korisnickoIme, lozinka, datetime, Role.KORISNIK);
 			//KorisnikDAO.add(korisnik);
-			
-			response.sendRedirect("FilmoviServlet");
+
+			response.sendRedirect("LoginServlet");
 		} catch (Exception ex) {
 			String message = ex.getMessage();
 			if (message == null) {
@@ -66,5 +66,9 @@ public class RegistracijaServlet extends HttpServlet {
 		}
 
 	}
-}
 
+	private Date Date() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}

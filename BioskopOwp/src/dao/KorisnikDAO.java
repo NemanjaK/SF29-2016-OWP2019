@@ -48,7 +48,28 @@ public class KorisnikDAO {
 		}
 		return null;
 	}
-	
+	public static Korisnik getOneProj(String korisnickoIme) throws ParseException {
+
+		Connection conn = ConnectionManager.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		try {
+			String query = "SELECT korisnickoIme FROM korisnik where korisnickoIme = ?";
+
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, korisnickoIme);
+			rset = pstmt.executeQuery();
+
+			return new Korisnik(korisnickoIme);
+			
+		} catch (SQLException ex) {
+			System.out.println("Greska u SQL upitu!");
+			ex.printStackTrace();
+
+		}
+		return null;
+	}
 	
 
 	
@@ -69,10 +90,7 @@ public class KorisnikDAO {
 			if (rset.next()) {
 				int index = 2;
 				String lozinka = rset.getString(index++);
-				//System.out.println("!formated--Korisnik------------");
 				Date date = (Date) formatter.parse(rset.getString(index++));
-
-				//System.out.println("formated------Korisnik--------");
 				Role role = Role.valueOf(rset.getString(index++));
 
 				return new Korisnik(korisnickoIme, lozinka, date, role);
@@ -135,7 +153,7 @@ public class KorisnikDAO {
 			int index = 1;
 			pstmt.setString(index++, korisnik.getKorisnickoIme());
 			pstmt.setString(index++, korisnik.getLozinka());
-			//pstmt.setString(index++, korisnik.getDatumRegistracije());
+			pstmt.setString(index++, korisnik.getDatumRegistracije());
 			pstmt.setString(index++, korisnik.getRole().toString());
 			System.out.println(pstmt);
 

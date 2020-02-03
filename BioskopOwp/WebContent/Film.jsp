@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:if test="${ulogovanKorisnickoIme == null}">
-	<c:redirect url="Login.html"/>
-</c:if>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,8 +7,6 @@
 <title>${film.naziv}</title>
 </head>
 	<body>
-	<c:choose>
-		<c:when test="${ulogovanKorisnikRole == 'KORISNIK'}">
 			<table>
 				<tr><td align="right"><b>Naziv:</b></td><td>${film.naziv}</td></tr>			
 				<tr><td align="right"><b>Trajanje:</b></td><td>${film.trajanje}</td></tr>
@@ -26,17 +21,16 @@
 			
 			<p>
 			
-			<c:if test="${ulogovanKorisnikRole == 'KORISNIK'}">
+			<c:if test="${ulogovanKorisnikRole.role == 'KORISNIK'}">
 			<a href="KorisnikServlet">Profil</a><br /> <br />
 			</c:if>
 			
-			<c:if test="${ulogovanKorisnikRole == 'KORISNIK'}">
+			<c:if test="${ulogovanKorisnikRole.role == 'KORISNIK'}">
 			<a href="LogoutServlet">Odjava</a><br/> <br />
 			</c:if>
 			</p>
-			
-		</c:when>
-	<c:when test="${ulogovanKorisnikRole == 'ADMIN'}">	
+<c:choose>
+	<c:when test="${ulogovanKorisnikRole.role == 'ADMIN'}">	
 		<table>	
 			<form action="FilmoviServlet" method="post">
 				<input type="hidden" name="action" value="update"/>
@@ -58,7 +52,7 @@
 					<tr><td/><td><input type="submit" value="Obrisi"></td>
 				</form>	
 			<p>	
-			<c:if test="${ulogovanKorisnikRole == 'ADMIN'}">
+			<c:if test="${ulogovanKorisnikRole.role == 'ADMIN'}">
 			<a href="KorisniciServlet">Upravljanje korisnicima</a><br /> <br />
 			</c:if>	
 			</p>
