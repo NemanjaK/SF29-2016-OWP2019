@@ -7,6 +7,8 @@
 <title>${film.naziv}</title>
 </head>
 	<body>
+	<c:choose>
+		<c:when test="${ulogovanKorisnikRole.role == null || ulogovanKorisnikRole.role == 'KORISNIK'}">
 			<table>
 				<tr><td align="right"><b>Naziv:</b></td><td>${film.naziv}</td></tr>			
 				<tr><td align="right"><b>Trajanje:</b></td><td>${film.trajanje}</td></tr>
@@ -29,7 +31,7 @@
 			<a href="LogoutServlet">Odjava</a><br/> <br />
 			</c:if>
 			</p>
-<c:choose>
+		</c:when>
 	<c:when test="${ulogovanKorisnikRole.role == 'ADMIN'}">	
 		<table>	
 			<form action="FilmoviServlet" method="post">

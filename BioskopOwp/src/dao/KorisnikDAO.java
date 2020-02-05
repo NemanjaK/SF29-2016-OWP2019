@@ -45,33 +45,13 @@ public class KorisnikDAO {
 			System.out.println("Greska u SQL upitu!");
 			ex.printStackTrace();
 
+		} finally {
+			try {pstmt.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {rset.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
 		}
 		return null;
 	}
-	public static Korisnik getOneProj(String korisnickoIme) throws ParseException {
-
-		Connection conn = ConnectionManager.getConnection();
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-
-		try {
-			String query = "SELECT korisnickoIme FROM korisnik where korisnickoIme = ?";
-
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, korisnickoIme);
-			rset = pstmt.executeQuery();
-
-			return new Korisnik(korisnickoIme);
-			
-		} catch (SQLException ex) {
-			System.out.println("Greska u SQL upitu!");
-			ex.printStackTrace();
-
-		}
-		return null;
-	}
-	
-
 	
 	public static Korisnik getOne(String korisnickoIme) throws ParseException {
 
@@ -90,15 +70,23 @@ public class KorisnikDAO {
 			if (rset.next()) {
 				int index = 2;
 				String lozinka = rset.getString(index++);
-				Date date = (Date) formatter.parse(rset.getString(index++));
+				
+				java.sql.Date projekcijaDatumSql = rset.getDate(index++);
+				Date korisnikDatum = new Date(projekcijaDatumSql.getTime());
+				
+				
 				Role role = Role.valueOf(rset.getString(index++));
 
-				return new Korisnik(korisnickoIme, lozinka, date, role);
+				return new Korisnik(korisnickoIme, lozinka, korisnikDatum, role);
 			}
 		} catch (SQLException ex) {
 			System.out.println("Greska u SQL upitu!");
 			ex.printStackTrace();
 
+		}finally {
+			try {pstmt.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {rset.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();} 
 		}
 		return null;
 	}
@@ -121,11 +109,12 @@ public class KorisnikDAO {
 				String korisnickoIme = rset.getString(index++);
 				String password = rset.getString(index++);
 				
-				Date date = (Date) formatter.parse(rset.getString(index++));
-
+				java.sql.Date projekcijaDatumSql = rset.getDate(index++);
+				Date korisnikDatum = new Date(projekcijaDatumSql.getTime());
+		
 				Role role = Role.valueOf(rset.getString(index++));
 
-				Korisnik korisnik = new Korisnik(korisnickoIme, password, date, role);
+				Korisnik korisnik = new Korisnik(korisnickoIme, password, korisnikDatum, role);
 				korisnici.add(korisnik);
 
 			}
@@ -134,6 +123,10 @@ public class KorisnikDAO {
 			System.out.println("Greska u SQL upitu!");
 			ex.printStackTrace();
 
+		} finally {
+			try {pstmt.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {rset.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
 		}
 		return null;
 
@@ -153,7 +146,7 @@ public class KorisnikDAO {
 			int index = 1;
 			pstmt.setString(index++, korisnik.getKorisnickoIme());
 			pstmt.setString(index++, korisnik.getLozinka());
-			pstmt.setString(index++, korisnik.getDatumRegistracije());
+			pstmt.setDate(index++, (java.sql.Date) korisnik.getDatumRegistracije());
 			pstmt.setString(index++, korisnik.getRole().toString());
 			System.out.println(pstmt);
 
@@ -184,6 +177,35 @@ public class KorisnikDAO {
 		}
 		return false;
 	}
+	public static boolean updateKorisnikaPass(Korisnik korisnik) throws Exception {
+		Connection conn = ConnectionManager.getConnection();
+
+		PreparedStatement pstmt = null;
+
+		try {
+			
+			String query = "UPDATE korisnik SET lozinka = ? WHERE korisnickoIme = ?";
+
+			pstmt = conn.prepareStatement(query);
+
+			int index = 1;
+			pstmt.setString(index++, korisnik.getLozinka());
+			pstmt.setString(index++, korisnik.getKorisnickoIme());
+
+
+			System.out.println(pstmt);
+
+			return pstmt.executeUpdate() == 1;
+		} catch (SQLException ex) {
+			System.out.println("Greska u SQL upitu!");
+			ex.printStackTrace();
+		}finally {
+			try {pstmt.close();} catch (SQLException ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
+		}
+		return false;
+	}
+
 	
 	public static boolean updateKorisnika(Korisnik korisnik, String updatedKosrisnickoIme) throws Exception {
 		Connection conn = ConnectionManager.getConnection();
@@ -194,12 +216,13 @@ public class KorisnikDAO {
 			if(updatedKosrisnickoIme == null || updatedKosrisnickoIme.isEmpty()) {
 				return false;
 			}
-			String query = "UPDATE korisnik SET korisnickoIme = '" + updatedKosrisnickoIme +"', uloga = ? WHERE korisnickoIme = ?";
+			String query = "UPDATE korisnik SET korisnickoIme = '" + updatedKosrisnickoIme +"', uloga = ?, lozinka = ?, WHERE korisnickoIme = ?";
 
 			pstmt = conn.prepareStatement(query);
 
 			int index = 1;
 			pstmt.setString(index++, korisnik.getRole().toString());
+			pstmt.setString(index++, korisnik.getLozinka());
 			pstmt.setString(index++, korisnik.getKorisnickoIme());
 
 			System.out.println(pstmt);
@@ -208,6 +231,9 @@ public class KorisnikDAO {
 		} catch (SQLException ex) {
 			System.out.println("Greska u SQL upitu!");
 			ex.printStackTrace();
+		}finally {
+			try {pstmt.close();} catch (SQLException ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
 		}
 		return false;
 	}

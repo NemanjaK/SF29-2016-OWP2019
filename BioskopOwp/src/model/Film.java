@@ -20,14 +20,17 @@ public class Film {
 
 
 
-	public Film(int id, String naziv) {
+	public Film(int id) {
+		super();
+		this.id = id;
+	}
+
+
+	public Film(int id,String naziv) {
 		super();
 		this.id = id;
 		this.naziv = naziv;
 	}
-
-
-
 
 	public Film(int id, String naziv, String reziser, String glumci, String zanrovi, String distributer,
 			Integer godinaProizvodnje, String opis, int trajanje, String zemljaPorekla) {

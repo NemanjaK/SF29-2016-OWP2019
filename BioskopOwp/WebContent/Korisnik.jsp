@@ -13,7 +13,7 @@
 <body>
 
 	<c:choose>
-		<c:when test="${ulogovanKorisnikRole == 'KORISNIK'}">
+		<c:when test="${ulogovanKorisnikRole.role == 'KORISNIK'}">
 			<h3>Profil</h3>
 			<table border="1">
 				<tr>
@@ -24,13 +24,22 @@
 
 				<tr>
 					<td>${ulogovanKorisnickoIme}</td>
-					<td>${ulogovanKorisnikRole}</td>
 					<td>${ulogovanDatumRegistracije}</td>
+					<td>${ulogovanKorisnikRole.role}</td>
 				</tr>
+			</table>
+			<table>
+					<form action="KorisnikServlet" method="post">
+					<input type="hidden" name="action" value="update"/>
+					<input type="hidden" name="korisnickoIme" value="${ulogovanKorisnikRole.korisnickoIme}"/>		
+					<tr><td align="right">Lozinka:</td><td><input type="password" name="lozinka"/></td></tr>
+					<tr><td align="right">Ponovljena lozinka:</td><td><input type="password" name="ponovljenaLozinka"/></td></tr>					
+					<tr><td/><td><input type="submit" value="Izmeni"></td></tr>
+				</form>
 			</table>
 		</c:when>
 
-		<c:when test="${ulogovanKorisnikRole == 'ADMIN'}">
+		<c:when test="${ulogovanKorisnikRole.role == 'ADMIN'}">
 			<h3>Korisnik</h3>
 			<table border="1">
 			<form action="KorisniciServlet" method="post">

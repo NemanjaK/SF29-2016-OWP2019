@@ -7,6 +7,7 @@
 <meta charset="ISO-8859-1">
 <title>Projekcija</title>
 </head>
+
 <body>
 	<table border=1>
 		<tr>
@@ -24,9 +25,37 @@
 			<td>${projekcija.datumVreme}</td>
 			<td>${projekcija.cenaKarte}</td>
 			<td>${projekcija.adminDodaoProjekciju.korisnickoIme}</td>
-			<td><a href="FilmServlet?id=${film.id}">${projekcija.prikazaniFilm.naziv}</a></td>
+			<td><a href="FilmServlet?id=${projekcija.prikazaniFilm.id}">${projekcija.prikazaniFilm.naziv}</a></td>
 		</tr>
+		
 	</table>
+	
+	<c:choose>	
+		<c:when test="${ulogovanKorisnikRole.role == 'ADMIN'}">
+		<h3>Prodate karte za projekciju</h3>				
+		<table border=2>
+		<tr>
+			<th>Zauzeto sediste</th>
+			<th>Vreme prodaje karte</th>
+			<th>Korisnik koji je kupio kartu</th>
+		</tr>
+		<c:forEach var="karta" items="${karte}">
+		<tr>
+			<td>${karta.sediste.redniBroj}</td>
+			<td><a href="KartaServlet?id=${karta.id}">${karta.datumProdaje}</a></td>
+			<td><a href="KorisnikServlet?korisnickoIme=${karta.korisnikKupioKartu.korisnickoIme}">${karta.korisnikKupioKartu.korisnickoIme}</a></td>		
+					
+		</tr>
+		</c:forEach>
+		</table>
+		</c:when>		
+		
+		<c:when test="${ulogovanKorisnikRole.role == 'KORISNIK'}">
+		<td><a href="KarteServlet?id=${projekcija.id}"><button>Kupi kartu</button>
+		</c:when>			
+	</c:choose>
+	
+	<a href="ProjekcijeServlet">Nazad</a>
 
 </body>
 </html>

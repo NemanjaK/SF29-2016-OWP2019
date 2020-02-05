@@ -1,22 +1,39 @@
 package model;
 
+import java.sql.Timestamp;
+
 public class Karta {
 
 	private int id;
 	private Projekcija projekcija;
 	private Sediste sediste;
-	private String datumProdaje;
+	private Timestamp datumProdaje;
 	private Korisnik korisnikKupioKartu;
 
 	public Karta() {
 	}
 
-	public Karta(int id, Projekcija projekcija, Sediste sediste, String datumProdaje, Korisnik korisnikKupioKartu) {
+	public Karta(int id, Projekcija projekcija, Sediste sediste, Timestamp datumProdaje, Korisnik korisnikKupioKartu) {
 		super();
 		this.id = id;
 		this.projekcija = projekcija;
 		this.sediste = sediste;
 		this.datumProdaje = datumProdaje;
+		this.korisnikKupioKartu = korisnikKupioKartu;
+	}
+	
+	public Karta(Projekcija projekcija, Sediste sediste, Timestamp datumProdaje, Korisnik korisnikKupioKartu) {
+		super();
+		this.projekcija = projekcija;
+		this.sediste = sediste;
+		this.datumProdaje = datumProdaje;
+		this.korisnikKupioKartu = korisnikKupioKartu;
+	}
+	
+	public Karta(Projekcija projekcija, Sediste sediste,Korisnik korisnikKupioKartu) {
+		super();
+		this.projekcija = projekcija;
+		this.sediste = sediste;
 		this.korisnikKupioKartu = korisnikKupioKartu;
 	}
 
@@ -44,11 +61,11 @@ public class Karta {
 		this.sediste = sediste;
 	}
 
-	public String getDatumProdaje() {
+	public Timestamp getDatumProdaje() {
 		return datumProdaje;
 	}
 
-	public void setDatumProdaje(String datumProdaje) {
+	public void setDatumProdaje(Timestamp datumProdaje) {
 		this.datumProdaje = datumProdaje;
 	}
 

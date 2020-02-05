@@ -56,11 +56,8 @@ public class Korisnik {
 		this.lozinka = lozinka;
 	}	
 
-	public String getDatumRegistracije() {
-		String pattern = "MM/dd/yyyy";
-		DateFormat df = new SimpleDateFormat(pattern);
-
-		return df.format(datumRegistracije);
+	public Date getDatumRegistracije() {
+		return datumRegistracije;
 	}
 	
 

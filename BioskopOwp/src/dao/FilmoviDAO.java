@@ -11,7 +11,7 @@ import model.Film;
 
 public class FilmoviDAO {
 
-	public static List<Film> getAll(String naziv, String zanrovi, String distributer, String zemljaPorekla, int minTrajanje, int maxTrajanje, int minGodinaProizvodnje, int maxGodinaProizvodnje)  {
+	public static List<Film> getAll(String naziv, String zanrovi, String distributer, String zemljaPorekla, int minTrajanje, int maxTrajanje, int minGodinaProizvodnje, int maxGodinaProizvodnje, String sort)  {
 		List<Film> filmovi = new ArrayList<>();
 
 		Connection conn = ConnectionManager.getConnection();
@@ -21,7 +21,7 @@ public class FilmoviDAO {
 
 		try {
 			String query = "SELECT * FROM film WHERE naziv LIKE ? AND zanrovi LIKE ? AND distributer LIKE ? AND zemljaPorekla LIKE ? "
-					+ "AND trajanje >= ? AND trajanje <= ? AND godinaProizvodnje >= ? and godinaProizvodnje <= ?";
+					+ "AND trajanje >= ? AND trajanje <= ? AND godinaProizvodnje >= ? and godinaProizvodnje <= ? "+ sort +"";
 
 			pstmt = conn.prepareStatement(query);
 			int index = 1;
@@ -60,76 +60,53 @@ public class FilmoviDAO {
 			return filmovi;
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}finally {
+			try {pstmt.close();} catch (SQLException ex1) {ex1.printStackTrace();}
+			try {rset.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
 		}
 		return null;
 
 	}
 	
-	public static Film getSearhOne(String naziv)  {
+	public static List<Film> getNaziv()  {
+		List<Film> filmovi = new ArrayList<>();
+
 		Connection conn = ConnectionManager.getConnection();
 
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 
 		try {
-			String query = "SELECT * FROM film WHERE naziv LIKE ?";
+			String query = "SELECT id,naziv FROM film";
 
 			pstmt = conn.prepareStatement(query);
 			int index = 1;
-			pstmt.setString(index++, "%" + naziv + "%");
 			System.out.println(pstmt);
+
+			
 			rset = pstmt.executeQuery();
 
 			while (rset.next()) {
 				index = 1;
 				int id = rset.getInt(index++);
-				String nazivF = rset.getString(index++);
-				String reziser = rset.getString(index++);
-				String glumci = rset.getString(index++);
-				String zanrovi = rset.getString(index++);
-				String distributer = rset.getString(index++);
-				Integer godinaProizvodnje = rset.getInt(index++);
-				String opis = rset.getString(index++);
-				Integer trajanje = rset.getInt(index++);
-				String zemljaPorekla = rset.getString(index++);
-
-				return new Film(id, nazivF, reziser, glumci, zanrovi, distributer, godinaProizvodnje, opis, trajanje,
-						zemljaPorekla);
-
+				String naziv = rset.getString(index++);			
+				
+				Film film = new Film(id, naziv);
+				filmovi.add(film);
 			}
+			return filmovi;
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}finally {
+			try {pstmt.close();} catch (SQLException ex1) {ex1.printStackTrace();}
+			try {rset.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
 		}
 		return null;
+
 	}
-	
-	public static Film getOneProj(int id)  {
-		Connection conn = ConnectionManager.getConnection();
 
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-
-		try {
-			String query = "SELECT id, naziv FROM film WHERE id = ?";
-
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, id);
-			System.out.println(pstmt);
-			rset = pstmt.executeQuery();
-
-			if (rset.next()) {
-				int index = 2;
-				String naziv = rset.getString(index++);
-
-				return new Film(id, naziv);
-
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return null;
-
-	}	
 
 	public static Film getOne(int id)  {
 		Connection conn = ConnectionManager.getConnection();
@@ -163,7 +140,11 @@ public class FilmoviDAO {
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		}
+		} finally {
+			try {pstmt.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {rset.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();} 
+			}
 		return null;
 
 	}
@@ -199,6 +180,9 @@ public class FilmoviDAO {
 		} catch (SQLException ex) {
 			System.out.println("Greska u SQL upitu!");
 			ex.printStackTrace();
+		} finally {
+			try {pstmt.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
 		}
 		return false;
 	}
@@ -217,6 +201,9 @@ public class FilmoviDAO {
 			return pstmt.executeUpdate() == 1;
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		} finally {
+			try {pstmt.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
 		}
 		return false;
 	}
@@ -272,9 +259,9 @@ public class FilmoviDAO {
 		} catch (Exception ex) {
 			System.out.println("Greska SQL add");
 			ex.printStackTrace();
-		}finally {
-			try {pstmt.close();} catch (SQLException ex1) {ex1.printStackTrace();}
-		}		
-		return false;
+		} finally {
+			try {pstmt.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();} 
+		} return false;
 	}
 }

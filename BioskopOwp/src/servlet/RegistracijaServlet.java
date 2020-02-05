@@ -1,7 +1,7 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.Date;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -45,13 +45,14 @@ public class RegistracijaServlet extends HttpServlet {
 			if (!lozinka.equals(ponovljenaLozinka))
 				throw new Exception("Lozinke se ne podudaraju!");
 
-			/*
-			 * Date now = Date(); now.toString(); SimpleDateFormat formatter = new
-			 * SimpleDateFormat("yyyy-MM-dd"); System.out.println(formatter); Date datetime
-			 * = new Date(formatter.(now).getTime());
-			 */
-			//Korisnik korisnik = new Korisnik(korisnickoIme, lozinka, datetime, Role.KORISNIK);
-			//KorisnikDAO.add(korisnik);
+			LocalDateTime now = LocalDateTime.now();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			String formatDateTime = now.format(formatter);
+			System.out.println(formatter);
+			Date datetime = new Date(KorisnikDAO.DATETIME_FORMAT.parse(formatDateTime).getTime());
+			
+			Korisnik korisnik = new Korisnik(korisnickoIme, lozinka, datetime, Role.KORISNIK);
+			KorisnikDAO.add(korisnik);
 
 			response.sendRedirect("LoginServlet");
 		} catch (Exception ex) {

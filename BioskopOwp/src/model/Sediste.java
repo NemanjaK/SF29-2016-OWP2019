@@ -15,6 +15,13 @@ public class Sediste {
 		this.redniBroj = redniBroj;
 		this.sala = sala;
 	}
+	
+	
+	public Sediste(int redniBroj) {
+		super();
+		this.redniBroj = redniBroj;
+	}
+
 	public int getRedniBroj() {
 		return redniBroj;
 	}

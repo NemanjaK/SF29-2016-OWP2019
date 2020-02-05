@@ -7,6 +7,7 @@
 <meta charset="ISO-8859-1">
 <title>Projekcije</title>
 </head>
+<h1 align="left">Projekcije u ponudi</h1>
 <body>
 	<table border=1>
 		<tr>
@@ -19,18 +20,43 @@
 		</tr>	
 	<form action="ProjekcijeServlet" method="get">
 			<tr bgcolor="lightgrey">
-			<td align="center"><input type="text" name="sort"><input type="submit" value="Pretrazi"></td>		
-			<td align="center"><input type="text" name="tipProjkecijeFilter"><input type="submit" value="Pretrazi"></td>
-			<td align="center"><input type="text" name="salaFilter"><input type="submit" value="Pretrazi"></td>
-			<td></td>
+			<td align="center"><select name="tipProjkecijeFilter">
+								 <option value="">Select</option>		
+								  <option value="2D">2D</option>
+								  <option value="3D">3D</option>
+								  <option value="4D">4D</option>
+								</select><input type="submit" value="Pretrazi"></td>
+			<td align="center"><select name="salaFilter">
+								 <option value="">Select</option>		
+								  <option value="SALA1">SALA1</option>
+								  <option value="SALA2">SALA2</option>
+								  <option value="SALA3">SALA3</option>
+								</select><input type="submit" value="Pretrazi"></td>
 			<td align="center">
-					od:&nbsp;<input type="text" name="minCenaKarteFilter"><br/>
+					od:&nbsp;<input type="datetime-local" name="minVreme"><br/>
+					do:&nbsp;<input type="datetime-local" name="maxVreme"><input type="submit" value="Pretrazi">
+			<td align="center">
+					od:&nbsp;<input type="text" name="minCenaKarteFilter" value="${minCenaKarte}"><br/>
 					do:&nbsp;<input type="text" name="maxCenaKarteFilter" value="${maxCenaKarte}"><input type="submit" value="Pretrazi">
 			</td>
 			<td></td>
-			<td align="center"><input type="text" name="nazivFilmaFilter"><input type="submit" value="Pretrazi"></td>
+			</td><td align="center"><input type="text" name="nazivFilmaFilter"><input type="submit" value="Pretrazi"></td>
 			</tr>
+			<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>
+				<select name="sort"/>
+						<option value="ORDER BY projekcija.cenaKarte ASC">RASTUCE</option>
+						<option value="ORDER BY projekcija.cenaKarte DESC">OPADAJUCE</option>
+				</select><input type="submit" value="Sortiraj">			
+			</td>
+			<td></td>
+			<td></td>
+			</tr>			
 		</form> 
+
 		<c:forEach var="projekcija" items="${projekcije}">
 		<tr>
 			<td>${projekcija.tipProjekcije.naziv}</td>
@@ -50,7 +76,7 @@
 			<a href="KorisnikServlet">Profil</a><br /> <br />
 			</c:if>
 		
-			<c:if test="${ulogovanKorisnikRole.role == 'KORISNIK'}">
+			<c:if test="${ulogovanKorisnikRole.role == 'KORISNIK' || ulogovanKorisnikRole.role == 'ADMIN' }">
 			<a href="LogoutServlet">Odjava</a><br/> <br />
 			</c:if>
 					
@@ -59,7 +85,7 @@
 			</c:if>
 			
 			<c:if test="${ulogovanKorisnikRole.role == 'ADMIN'}">
-				<a href="AddProjekcija.html">Dodaj projekciju</a>
+				<a href="AddProjekcijaServlet">Dodaj projekciju</a>
 				<br />
 			</c:if>
 	

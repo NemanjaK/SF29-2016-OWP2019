@@ -7,13 +7,22 @@ public class Sala {
 	private String naziv;
 	
 	
-	
+
+	public Sala(int id) {
+		super();
+		this.id = id;
+	}
+		
 	public Sala(int id, String naziv) {
 		super();
 		this.id = id;
 		this.naziv = naziv;
 	}
-
+	
+	public Sala(String naziv) {
+		super();
+		this.naziv = naziv;
+	}
 	public Sala() {
 		
 	}	

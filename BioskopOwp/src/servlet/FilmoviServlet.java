@@ -21,21 +21,12 @@ public class FilmoviServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		/*
-		 * String ulogovanKorisnickoIme = (String)
-		 * request.getSession().getAttribute("ulogovanKorisnickoIme"); if
-		 * (ulogovanKorisnickoIme == null) { response.sendRedirect("./Login.html");
-		 * return; }
-		 */
+		String ulogovanKorisnickoIme = (String) request.getSession().getAttribute("ulogovanKorisnickoIme");
 
 		try {
 
-			/*
-			 * Korisnik ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme); if
-			 * (ulogovanKorisnik == null) {
-			 * request.getRequestDispatcher("./LogoutServlet").forward(request, response);
-			 * return; }
-			 */
+			Korisnik ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
+
 			String naziv = request.getParameter("nazivFilter");
 			naziv = (naziv != null ? naziv : "");
 
@@ -77,12 +68,17 @@ public class FilmoviServlet extends HttpServlet {
 
 			String zemljaPorekla = request.getParameter("zemljaPoreklaFilter");
 			zemljaPorekla = (zemljaPorekla != null ? zemljaPorekla : "");
+
 			
+			String sort = request.getParameter("sort");
+			sort = (sort != null ? sort : "");
 
+			
 			List<Film> filmovi = FilmoviDAO.getAll(naziv, zanrovi, distributer, zemljaPorekla, minTrajanje, maxTrajanje,
-					minGodinaProizvodnje, maxGodinProizvodnje);
+					minGodinaProizvodnje, maxGodinProizvodnje, sort);
 
-			//request.setAttribute("ulogovanKorisnikRole", ulogovanKorisnik.getRole());
+		
+			request.setAttribute("ulogovanKorisnikRole", ulogovanKorisnik);
 			request.setAttribute("filmovi", filmovi);
 			request.getRequestDispatcher("Filmovi.jsp").forward(request, response);
 		} catch (Exception ex) {

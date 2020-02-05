@@ -19,45 +19,64 @@ import model.Korisnik.Role;
 @SuppressWarnings("serial")
 public class KorisniciServlet extends HttpServlet {
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		List<Korisnik> korisnici;
-		try {
-			korisnici = KorisnikDAO.getAll();
-			
-			request.setAttribute("korisnici", korisnici);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String ulogovanKorisnickoIme = (String) request.getSession().getAttribute("ulogovanKorisnickoIme");
 
+		if (ulogovanKorisnickoIme == null) {
+			response.sendRedirect("./Login.html");
+			return;
+		}
+		try {
+			Korisnik ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
+			if (ulogovanKorisnik == null) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			
+			List<Korisnik> korisnici = KorisnikDAO.getAll();
+
+			request.setAttribute("korisnici", korisnici);
+			request.setAttribute("ulogovanKorisnikRole", ulogovanKorisnik);	
 			request.getRequestDispatcher("Korisnici.jsp").forward(request, response);
 
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	
+
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		try {
 
 			String action = request.getParameter("action");
 			switch (action) {
 			case "update": {
-				
+
 				String korisnickoIme = request.getParameter("korisnickoIme");
 				Korisnik korisnik = KorisnikDAO.getOne(korisnickoIme);
-				
+
 				String updatedKosrisnickoIme = request.getParameter("newKorisnickoIme");
-								
-				String role = request.getParameter("role");			
+
+				String role = request.getParameter("role");
 				Role newRole = Role.valueOf(role);
 				
-				korisnik.setRole(newRole);
+				String lozinka = request.getParameter("lozinka");
+				if ("".equals(lozinka))
+					throw new Exception("Lozinka je prazna!");
+
+				String ponovljenaLozinka = request.getParameter("ponovljenaLozinka");
+				if (!lozinka.equals(ponovljenaLozinka))
+					throw new Exception("Lozinke se ne podudaraju!");			
 				
+				korisnik.setLozinka(lozinka);
+				korisnik.setRole(newRole);
+
 				KorisnikDAO.updateKorisnika(korisnik, updatedKosrisnickoIme);
-			
+
 				break;
 			}
 			case "delete": {
@@ -66,8 +85,7 @@ public class KorisniciServlet extends HttpServlet {
 			}
 			}
 
-		
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		response.sendRedirect("./KorisniciServlet");

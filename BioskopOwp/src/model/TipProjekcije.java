@@ -8,9 +8,18 @@ public class TipProjekcije {
 	public TipProjekcije() {
 
 	}
+	public TipProjekcije(int id) {
+		super();
+		this.id = id;
+	}
 	public TipProjekcije(int id, String naziv) {
 		super();
 		this.id = id;
+		this.naziv = naziv;
+	}
+	
+	public TipProjekcije(String naziv) {
+		super();
 		this.naziv = naziv;
 	}
 	public int getId() {

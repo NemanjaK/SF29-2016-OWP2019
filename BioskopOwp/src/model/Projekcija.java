@@ -11,7 +11,7 @@ public class Projekcija {
 	private int id;
 	private TipProjekcije tipProjekcije;
 	private Sala sala;
-	private Date datumVreme;
+	private Timestamp datumVreme;
 	private double cenaKarte;
 	private Korisnik adminDodaoProjekciju;
 	private Film prikazaniFilm;
@@ -22,7 +22,34 @@ public class Projekcija {
 	
 	
 	
-	public Projekcija(int id, TipProjekcije tipProjekcije, Sala sala, Date datumVreme, double cenaKarte,
+	
+	
+	public Projekcija(TipProjekcije tipProjekcije, Sala sala, Timestamp datumVreme, double cenaKarte,
+			Film prikazaniFilm) {
+		super();
+		this.tipProjekcije = tipProjekcije;
+		this.sala = sala;
+		this.datumVreme = datumVreme;
+		this.cenaKarte = cenaKarte;
+		this.prikazaniFilm = prikazaniFilm;
+	}
+
+
+
+	public Projekcija(TipProjekcije tipProjekcije, Sala sala, Timestamp datumVreme, double cenaKarte,
+			Korisnik adminDodaoProjekciju, Film prikazaniFilm) {
+		super();
+		this.tipProjekcije = tipProjekcije;
+		this.sala = sala;
+		this.datumVreme = datumVreme;
+		this.cenaKarte = cenaKarte;
+		this.adminDodaoProjekciju = adminDodaoProjekciju;
+		this.prikazaniFilm = prikazaniFilm;
+	}
+
+
+
+	public Projekcija(int id, TipProjekcije tipProjekcije, Sala sala, Timestamp datumVreme, double cenaKarte,
 			Korisnik adminDodaoProjekciju, Film prikazaniFilm) {
 		super();
 		this.id = id;
@@ -34,7 +61,21 @@ public class Projekcija {
 		this.prikazaniFilm = prikazaniFilm;
 	}
 
+	public Projekcija(int id, TipProjekcije tipProjekcije, Sala sala, Timestamp datumVreme, Film prikazaniFilm) {
+		super();
+		this.id = id;
+		this.tipProjekcije = tipProjekcije;
+		this.sala = sala;
+		this.datumVreme = datumVreme;
+		this.prikazaniFilm = prikazaniFilm;
+	}
 
+
+
+	public Projekcija(int id) {
+		super();
+		this.id = id;
+	}
 
 	public int getId() {
 		return id;
@@ -60,14 +101,11 @@ public class Projekcija {
 		this.sala = sala;
 	}
 
-	public String getDatumVreme() {
-		String pattern = "MM/dd/yyyy HH:mm";
-		DateFormat df = new SimpleDateFormat(pattern);
-
-		return df.format(datumVreme);	
+	public Timestamp getDatumVreme() {
+		return datumVreme;	
 	}
 
-	public void setDatumVreme(Date datumVreme) {
+	public void setDatumVreme(Timestamp datumVreme) {
 		this.datumVreme = datumVreme;
 	}
 

@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,8 +22,10 @@ import model.Sala;
 import model.TipProjekcije;
 
 public class ProjekcijeDAO {
-	
-	public static List<Projekcija> getAll(double minCenaKarte, double maxCenaKarte, String nazivFilm, String tipProjekcije, String sala) throws ParseException {
+	public static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+	public static List<Projekcija> getAll(double minCenaKarte, double maxCenaKarte, 
+			String nazivFilm, String tipProjekcije, String sala, String sort) throws ParseException {
 
 		Connection conn = ConnectionManager.getConnection();
 
@@ -30,7 +34,10 @@ public class ProjekcijeDAO {
 
 		ArrayList<Projekcija> projekcije = new ArrayList<Projekcija>();
 
-
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		String formatDateTime = now.format(formatter);
+		System.out.println(formatDateTime);
 		try {
 			String query = "select projekcija.id, projekcija.cenaKarte, projekcija.vremePrikazivanja, film.id, film.naziv,tipProjekcije.id, tipProjekcije.naziv, sala.id, sala.naziv, korisnik.korisnickoIme\n" + 
 					"from projekcija\n" + 
@@ -39,7 +46,8 @@ public class ProjekcijeDAO {
 					"join sala on sala.id = projekcija.sala_id\n" + 
 					"join korisnik on korisnik.korisnickoIme = projekcija.korisnickoIme\n" + 
 					"WHERE projekcija.cenaKarte >= ? AND projekcija.cenaKarte <= ? AND film.naziv LIKE ?\n" + 
-					"AND tipProjekcije.naziv LIKE ? AND sala.naziv LIKE ?";
+					"AND tipProjekcije.naziv LIKE ? AND sala.naziv LIKE ? AND projekcija.vremePrikazivanja >= '" + formatDateTime + "'" + 
+					" "+ sort +"";
 
 			pstmt = conn.prepareStatement(query);
 			int index = 1;
@@ -50,17 +58,21 @@ public class ProjekcijeDAO {
 			pstmt.setString(index++, "%" + sala + "%");
 
 
+
 				
 			System.out.println(pstmt);
 
 			rset = pstmt.executeQuery();
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			//SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			while (rset.next()) {
 				index = 1;
 				Integer id = rset.getInt(index++);
+				
 				Double cenaKarte = rset.getDouble(index++);
-				Date date = (Date) formatter.parse(rset.getString(index++));
-							
+				
+				java.sql.Date projekcijaDatumSql = rset.getDate(index++);
+				Timestamp projekcijaDatum = new Timestamp(projekcijaDatumSql.getTime());
+
 				Integer idFilm = rset.getInt(index++);
 				String nazivFilmA = rset.getString(index++);
 				Film film = new Film(idFilm, nazivFilmA);
@@ -76,7 +88,7 @@ public class ProjekcijeDAO {
 				String korisnickoIme = rset.getString(index++);
 				Korisnik korisnik = new Korisnik(korisnickoIme);
 						
-				Projekcija projekcija = new Projekcija(id, tipProjekcijeP, salaP, date, cenaKarte, korisnik, film);
+				Projekcija projekcija = new Projekcija(id, tipProjekcijeP, salaP, projekcijaDatum, cenaKarte, korisnik, film);
 				projekcije.add(projekcija);
 				
 			}
@@ -86,6 +98,10 @@ public class ProjekcijeDAO {
 			System.out.println("Greska u SQL upitu");
 			ex.printStackTrace();
 
+		}finally {
+			try {pstmt.close();} catch (SQLException ex1) {ex1.printStackTrace();}
+			try {rset.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
 		}
 		return null;
 	}
@@ -171,8 +187,10 @@ public class ProjekcijeDAO {
 			if (rset.next()) {
 				int index = 2;
 				Double cenaKarte = rset.getDouble(index++);
-				Date date = (Date) formatter.parse(rset.getString(index++));
-							
+				
+				java.sql.Date projekcijaDatumSql = rset.getDate(index++);
+				Timestamp projekcijaDatum = new Timestamp(projekcijaDatumSql.getTime());
+		
 				Integer idFilm = rset.getInt(index++);
 				String nazivFilm = rset.getString(index++);
 				Film film = new Film(idFilm, nazivFilm);
@@ -188,13 +206,17 @@ public class ProjekcijeDAO {
 				String korisnickoIme = rset.getString(index++);
 				Korisnik korisnik = new Korisnik(korisnickoIme);
 						
-				Projekcija projekcija = new Projekcija(id, tipProjekcije, sala, date, cenaKarte, korisnik, film);
+				Projekcija projekcija = new Projekcija(id, tipProjekcije, sala, projekcijaDatum, cenaKarte, korisnik, film);
 				return projekcija;
 			}
 		} catch (SQLException ex) {
 			System.out.println("Greska u SQL upitu A!");
 			ex.printStackTrace();
 
+		} finally {
+			try {pstmt.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {rset.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
 		}
 		return null;
 	}
@@ -202,29 +224,22 @@ public class ProjekcijeDAO {
 	public static boolean add(Projekcija projekcija) throws Exception {
 
 		Connection conn = ConnectionManager.getConnection();
-		System.out.println("DAO++000++DAO");
 
 		PreparedStatement pstmt = null;
 		try {
-			String query = "INSERT INTO projekcija (id, tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id)"
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+			String query = "INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id)"
+					+ "VALUES (?, ?, ?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(query);
-			System.out.println("ASDASDAFSA");
 
 
 			int index = 1;
-			pstmt.setInt(index++, projekcija.getId());
 			pstmt.setInt(index++, projekcija.getTipProjekcije().getId());
 			pstmt.setInt(index++, projekcija.getSala().getId());
-			pstmt.setString(index++, projekcija.getDatumVreme());
+			pstmt.setTimestamp(index++, (java.sql.Timestamp) projekcija.getDatumVreme());
 			pstmt.setDouble(index++, projekcija.getCenaKarte());
 			pstmt.setString(index++, projekcija.getAdminDodaoProjekciju().getKorisnickoIme());
-			System.out.println("xccxccc");
-
 			pstmt.setInt(index++, projekcija.getPrikazaniFilm().getId());
 			
-			System.out.println("sdadasd");
-
 			System.out.println(pstmt);
 
 			return pstmt.executeUpdate() == 1;
@@ -234,6 +249,7 @@ public class ProjekcijeDAO {
 			ex.printStackTrace();
 		}finally {
 			try {pstmt.close();} catch (SQLException ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
 		}		
 		return false;
 	}

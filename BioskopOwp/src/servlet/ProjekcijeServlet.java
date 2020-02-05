@@ -1,7 +1,10 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -59,14 +62,16 @@ public class ProjekcijeServlet extends HttpServlet {
 			String sala = request.getParameter("salaFilter");
 			sala = (sala != null ? sala : "");
 			
-			//String sort = request.getParameter("sort");
+			String sort = request.getParameter("sort");
+			sort = (sort != null ? sort : "");
+			
 
-			List<Projekcija> projekcije = ProjekcijeDAO.getAll(minCenaKarte, maxCenaKarte, nazivFilm, tipProjekcije, sala);
-
+			List<Projekcija> projekcije = ProjekcijeDAO.getAll(minCenaKarte, maxCenaKarte, nazivFilm, tipProjekcije,
+					sala, sort);
+			
 			request.setAttribute("ulogovanKorisnikRole", ulogovanKorisnik);
-
+			
 			request.setAttribute("projekcije", projekcije);
-
 			request.getRequestDispatcher("Projekcije.jsp").forward(request, response);
 
 		} catch (Exception ex) {
@@ -76,45 +81,41 @@ public class ProjekcijeServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
 		try {
-			String action = request.getParameter("action");
-			switch (action) {
-			case "add": {
-
-				String tProjekcije = request.getParameter("tipProjekcije");
-				int i = Integer.parseInt(tProjekcije);
-				TipProjekcije tp = tipProjekcijeDAO.getOne(i);
-
-				String sala = request.getParameter("sala");
-				int s = Integer.parseInt(sala);
-				Sala sp = SalaDAO.getOne(s);
-
-				String datumVreme = request.getParameter("datumVreme");
-				Date vreme = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(datumVreme);
-
-				String cenaKarte = request.getParameter("cenaKarte");
-				double cena = Double.parseDouble(cenaKarte);
-
-				String admin = request.getParameter("admin");
-				Korisnik k = KorisnikDAO.getOneProj(admin);
-
-				String film = request.getParameter("film");
-				int f = Integer.parseInt(film);
-				Film filmP = FilmoviDAO.getOneProj(f);
-
-				int id = ProjekcijeDAO.getProjekcijaId();
-
-				Projekcija p = new Projekcija(id, tp, sp, vreme, cena, k, filmP);
-				System.out.println("XXXX");
-				ProjekcijeDAO.add(p);
-				System.out.println("YYYYY");
-
-				break;
-			}
-			}
-
-		} catch (Exception ex) {
+			/*
+			 * String action = request.getParameter("action"); switch (action) { case "add":
+			 * {
+			 * 
+			 * String ulogovanKorisnickoIme = (String)
+			 * request.getSession().getAttribute("ulogovanKorisnickoIme"); Korisnik
+			 * ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
+			 * 
+			 * int sala = Integer.parseInt(request.getParameter("sala")); Sala sl = new
+			 * Sala(sala);
+			 * 
+			 * String dateString = request.getParameter("date"); String timeString =
+			 * request.getParameter("time"); String datetimeString = dateString + " " +
+			 * timeString; System.out.println(datetimeString); Timestamp datetime = new
+			 * Timestamp(ProjekcijeDAO.DATETIME_FORMAT.parse(datetimeString).getTime());
+			 * 
+			 * String cenaKarte = request.getParameter("cenaKarte"); double cena =
+			 * Double.parseDouble(cenaKarte);
+			 * 
+			 * 
+			 * // String korisnickoIme = request.getParameter("korisnickoIme"); Korisnik //
+			 * korisnik = new Korisnik(korisnickoIme); // int film =
+			 * Integer.parseInt(request.getParameter("film")); Film f = new Film(film);
+			 * 
+			 * int sad = Integer.parseInt(request.getParameter("tipProjekcije"));
+			 * TipProjekcije tp = new TipProjekcije(sad);
+			 * 
+			 * Projekcija p = new Projekcija(tp, sl, datetime, cena, ulogovanKorisnik,f);
+			 * ProjekcijeDAO.add(p);
+			 * 
+			 * break; } }
+			 * 
+			 */} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		response.sendRedirect("./ProjekcijeServlet");
