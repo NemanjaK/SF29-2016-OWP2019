@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +34,11 @@ public class ProjekcijeDAO {
 
 		ArrayList<Projekcija> projekcije = new ArrayList<Projekcija>();
 
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		String formatDateTime = now.format(formatter);
-		System.out.println(formatDateTime);
+//		LocalDateTime now = LocalDateTime.now();
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//		String formatDateTime = now.format(formatter);
+//		System.out.println(formatDateTime);
+//		
 		try {
 			String query = "select projekcija.id, projekcija.cenaKarte, projekcija.vremePrikazivanja, film.id, film.naziv,tipProjekcije.id, tipProjekcije.naziv, sala.id, sala.naziv, korisnik.korisnickoIme\n" + 
 					"from projekcija\n" + 
@@ -46,7 +47,8 @@ public class ProjekcijeDAO {
 					"join sala on sala.id = projekcija.sala_id\n" + 
 					"join korisnik on korisnik.korisnickoIme = projekcija.korisnickoIme\n" + 
 					"WHERE projekcija.cenaKarte >= ? AND projekcija.cenaKarte <= ? AND film.naziv LIKE ?\n" + 
-					"AND tipProjekcije.naziv LIKE ? AND sala.naziv LIKE ? AND projekcija.vremePrikazivanja >= '" + formatDateTime + "'" + 
+					"AND tipProjekcije.naziv LIKE ? AND sala.naziv LIKE ?" + 
+					//"AND projekcija.vremePrikazivanja >= '" + formatDateTime + "'" + 
 					" "+ sort +"";
 
 			pstmt = conn.prepareStatement(query);
@@ -56,10 +58,9 @@ public class ProjekcijeDAO {
 			pstmt.setString(index++, "%" + nazivFilm + "%");
 			pstmt.setString(index++, "%" + tipProjekcije + "%");
 			pstmt.setString(index++, "%" + sala + "%");
+	
 
-
-
-				
+		
 			System.out.println(pstmt);
 
 			rset = pstmt.executeQuery();

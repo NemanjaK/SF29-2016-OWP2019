@@ -19,6 +19,7 @@ import model.Korisnik;
 import model.Projekcija;
 import model.Sala;
 import model.TipProjekcije;
+import model.Korisnik.Role;
 
 @SuppressWarnings("serial")
 public class AddProjekcijaServlet extends HttpServlet {
@@ -26,28 +27,59 @@ public class AddProjekcijaServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		
-		List<Sala> sale = SalaDAO.getAll();
-		List<TipProjekcije> tipovi = tipProjekcijeDAO.getAll();
-		List<Film> filmovi = FilmoviDAO.getNaziv();
+		String ulogovanKorisnickoIme = (String) request.getSession().getAttribute("ulogovanKorisnickoIme");
 
-		request.setAttribute("filmovi", filmovi);
-		request.setAttribute("sale", sale);
-		request.setAttribute("tipovi", tipovi);
+		if (ulogovanKorisnickoIme == null) {
+			response.sendRedirect("./Login.html");
+			return;
+		}
+		try {
+			Korisnik ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
+			if (ulogovanKorisnik == null) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}if (ulogovanKorisnik.getRole() == Role.KORISNIK) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			
+			List<Sala> sale = SalaDAO.getAll();
+			List<TipProjekcije> tipovi = tipProjekcijeDAO.getAll();
+			List<Film> filmovi = FilmoviDAO.getNaziv();
+			
+			request.setAttribute("ulogovanKorisnikRole", ulogovanKorisnik);
+			request.setAttribute("filmovi", filmovi);
+			request.setAttribute("sale", sale);
+			request.setAttribute("tipovi", tipovi);
 		
 		request.getRequestDispatcher("DodajProjekciju.jsp").forward(request, response);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String ulogovanKorisnickoIme = (String) request.getSession().getAttribute("ulogovanKorisnickoIme");
 
+		if (ulogovanKorisnickoIme == null) {
+			response.sendRedirect("./Login.html");
+			return;
+		}
 		try {
+			Korisnik ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
+			if (ulogovanKorisnik == null) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}	if (ulogovanKorisnik.getRole() == Role.KORISNIK) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+		
 			String action = request.getParameter("action");
 			switch (action) {
 			case "add": {
 
-				String ulogovanKorisnickoIme = (String) request.getSession().getAttribute("ulogovanKorisnickoIme");
-				Korisnik ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
 
 				int sala = Integer.parseInt(request.getParameter("sala"));
 				Sala sl = new Sala(sala);
@@ -60,7 +92,7 @@ public class AddProjekcijaServlet extends HttpServlet {
 
 				String cenaKarte = request.getParameter("cenaKarte");
 				double cena = Double.parseDouble(cenaKarte);
-		
+
 				int film = Integer.parseInt(request.getParameter("film"));
 				Film f = new Film(film);
 

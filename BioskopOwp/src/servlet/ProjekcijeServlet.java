@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,11 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.FilmoviDAO;
+import dao.KartaDAO;
 import dao.KorisnikDAO;
 import dao.ProjekcijeDAO;
 import dao.SalaDAO;
 import dao.tipProjekcijeDAO;
 import model.Film;
+import model.Karta;
 import model.Korisnik;
 import model.Projekcija;
 import model.Sala;
@@ -64,13 +66,20 @@ public class ProjekcijeServlet extends HttpServlet {
 			
 			String sort = request.getParameter("sort");
 			sort = (sort != null ? sort : "");
+			System.out.println("dodje li");
 			
-
+//			
+//			 String vremeOdparam = request.getParameter("vremeOd"); DateTimeFormatter
+//			 formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
+//			 vremeOdparam  = (vremeOdparam != null ? vremeOdparam: ""); 
+//			 Date vremeOd = (Date) formatter.parse(vremeOdparam); 
+			List<Karta> karte = KartaDAO.getIzvesajKarti();
 			List<Projekcija> projekcije = ProjekcijeDAO.getAll(minCenaKarte, maxCenaKarte, nazivFilm, tipProjekcije,
 					sala, sort);
 			
 			request.setAttribute("ulogovanKorisnikRole", ulogovanKorisnik);
 			
+			request.setAttribute("karte", karte);
 			request.setAttribute("projekcije", projekcije);
 			request.getRequestDispatcher("Projekcije.jsp").forward(request, response);
 

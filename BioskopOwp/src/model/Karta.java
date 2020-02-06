@@ -36,6 +36,12 @@ public class Karta {
 		this.sediste = sediste;
 		this.korisnikKupioKartu = korisnikKupioKartu;
 	}
+		
+	public Karta(int id, Projekcija projekcija) {
+		super();
+		this.id = id;
+		this.projekcija = projekcija;
+	}
 
 	public int getId() {
 		return id;

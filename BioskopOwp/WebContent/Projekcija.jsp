@@ -7,25 +7,23 @@
 <meta charset="ISO-8859-1">
 <title>Projekcija</title>
 </head>
-
+<h2>Projekcija</h2>
 <body>
-	<table border=1>
+	<table border=2>
 		<tr>
+			<th>Film</th>
 			<th>Tip projekcije</th>
 			<th>Sala</th>
 			<th>Vreme prikazivanja</th>
-			<th>Cena karte</th>
-			<th>Korisnicko ime</th>
-			<th>Film</th>
+			<th>Cena karte(din)</th>
 		</tr>
 
 		<tr>
+			<td><a href="FilmServlet?id=${projekcija.prikazaniFilm.id}">${projekcija.prikazaniFilm.naziv}</a></td>		
 			<td>${projekcija.tipProjekcije.naziv}</td>
 			<td>${projekcija.sala.naziv}</td>
 			<td>${projekcija.datumVreme}</td>
 			<td>${projekcija.cenaKarte}</td>
-			<td>${projekcija.adminDodaoProjekciju.korisnickoIme}</td>
-			<td><a href="FilmServlet?id=${projekcija.prikazaniFilm.id}">${projekcija.prikazaniFilm.naziv}</a></td>
 		</tr>
 		
 	</table>
@@ -51,11 +49,14 @@
 		</c:when>		
 		
 		<c:when test="${ulogovanKorisnikRole.role == 'KORISNIK'}">
-		<td><a href="KarteServlet?id=${projekcija.id}"><button>Kupi kartu</button>
+		<td><br><a href="KarteServlet?id=${projekcija.id}&idSala=${projekcija.sala.id}"><button>Kupi kartu</button><br></br>
 		</c:when>			
 	</c:choose>
 	
-	<a href="ProjekcijeServlet">Nazad</a>
-
+		<a href="ProjekcijeServlet">Nazad</a>
+	
+		<c:if test="${ulogovanKorisnikRole.role == 'KORISNIK' || ulogovanKorisnikRole.role == 'ADMIN' }">
+			<a href="LogoutServlet">Odjava</a><br/> <br />
+		</c:if>
 </body>
 </html>

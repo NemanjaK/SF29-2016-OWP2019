@@ -11,15 +11,15 @@
 <body>
 	<table border=1>
 		<tr>
+			<th>Film</th>
 			<th>Tip projekcije</th>
 			<th>Sala</th>
 			<th>Vreme prikazivanja</th>
-			<th>Cena karte</th>
-			<th>Korisnicko ime</th>
-			<th>Film</th>
+			<th>Cena karte(din)</th>
 		</tr>	
 	<form action="ProjekcijeServlet" method="get">
 			<tr bgcolor="lightgrey">
+			</td><td align="center"><input type="text" name="nazivFilmaFilter"><input type="submit" value="Pretrazi"></td>
 			<td align="center"><select name="tipProjkecijeFilter">
 								 <option value="">Select</option>		
 								  <option value="2D">2D</option>
@@ -33,44 +33,45 @@
 								  <option value="SALA3">SALA3</option>
 								</select><input type="submit" value="Pretrazi"></td>
 			<td align="center">
-					od:&nbsp;<input type="datetime-local" name="minVreme"><br/>
-					do:&nbsp;<input type="datetime-local" name="maxVreme"><input type="submit" value="Pretrazi">
+					od:&nbsp;<input type="text" name="vremeOd"><br/>
+						<input type="submit" value="Pretrazi">
 			<td align="center">
 					od:&nbsp;<input type="text" name="minCenaKarteFilter" value="${minCenaKarte}"><br/>
 					do:&nbsp;<input type="text" name="maxCenaKarteFilter" value="${maxCenaKarte}"><input type="submit" value="Pretrazi">
 			</td>
-			<td></td>
-			</td><td align="center"><input type="text" name="nazivFilmaFilter"><input type="submit" value="Pretrazi"></td>
 			</tr>
 			<tr>
 			<td></td>
 			<td></td>
 			<td></td>
+			<td></td>
 			<td>
 				<select name="sort"/>
+						<option value="">Select</option>
 						<option value="ORDER BY projekcija.cenaKarte ASC">RASTUCE</option>
 						<option value="ORDER BY projekcija.cenaKarte DESC">OPADAJUCE</option>
-				</select><input type="submit" value="Sortiraj">			
+				</select><input type="submit" value="Sortiraj">		
 			</td>
-			<td></td>
-			<td></td>
 			</tr>			
 		</form> 
 
 		<c:forEach var="projekcija" items="${projekcije}">
 		<tr>
+			<td><a href="FilmServlet?id=${projekcija.prikazaniFilm.id}">${projekcija.prikazaniFilm.naziv}</a></td>		
 			<td>${projekcija.tipProjekcije.naziv}</td>
 			<td>${projekcija.sala.naziv}</td>
 			<td><a href="ProjekcijaServlet?id=${projekcija.id}">${projekcija.datumVreme}</a></td>
 			<td>${projekcija.cenaKarte}</td>
-			<td>${projekcija.adminDodaoProjekciju.korisnickoIme}</td>
-			<td><a href="FilmServlet?id=${projekcija.prikazaniFilm.id}">${projekcija.prikazaniFilm.naziv}</a></td>
 		</tr>
 		</c:forEach>
 		
 	</table>
 	
 			<a href="FilmoviServlet">Filmovi</a><br /> <br />
+			
+			<c:if test="${ulogovanKorisnikRole.role == 'ADMIN'}">	
+			<a href="IzvestajServlet">Izvestaj</a><br /> <br />
+			</c:if>	
 	
 			<c:if test="${ulogovanKorisnikRole.role == 'KORISNIK'}">
 			<a href="KorisnikServlet">Profil</a><br /> <br />

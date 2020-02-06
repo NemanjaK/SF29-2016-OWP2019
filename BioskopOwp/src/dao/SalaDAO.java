@@ -19,7 +19,7 @@ public class SalaDAO {
 		ResultSet rset = null;
 
 		try {
-			String query = "SELECT naziv FROM sala WHERE id = ?";
+			String query = "SELECT id, naziv FROM sala WHERE id = ?";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, id);
@@ -27,9 +27,10 @@ public class SalaDAO {
 
 			if (rset.next()) {
 				int index = 1;
+				int idS = rset.getInt(index++);
 				String naziv = rset.getString(index++);
 
-				return new Sala(id, naziv);
+				return new Sala(idS, naziv);
 			}
 		} catch (SQLException ex) {
 			System.out.println("Greska u SQL upitu!");
@@ -78,5 +79,7 @@ public class SalaDAO {
 		return null;
 
 	}
+	
+	
 
 }

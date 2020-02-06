@@ -3,7 +3,6 @@
 <c:if test="${ulogovanKorisnickoIme == null || ulogovanKorisnikRole.role == 'KORISNIK'}">
 	<c:redirect url="Login.html" />
 </c:if> 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,6 +35,7 @@
 		</p>
 	</c:when>
 	</c:choose>
+			<a href="LogoutServlet">Odjava</a><br/> <br />
 		
 		
 </body>

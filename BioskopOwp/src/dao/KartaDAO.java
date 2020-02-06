@@ -161,4 +161,89 @@ public class KartaDAO {
 		return null;
 
 	}
+	
+	public static List<Karta> getIzvesajKarti(){
+		List<Karta> karte = new ArrayList<>();
+		
+		Connection conn = ConnectionManager.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		try {
+			String query = "select film.naziv, count(distinct projekcija.id), SUM(cenaKarte), COUNT(karta.id)\r\n" + 
+					"from karta\r\n" + 
+					"left join projekcija on projekcija.id = karta.projekcija_id\r\n" + 
+					"left join film on film.id = projekcija.film_id\r\n" + 
+					"Group by film.naziv";
+			
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				int index = 1;
+				String nazivFilma = rset.getString(index++);
+				Film film = new Film(nazivFilma);
+				
+				int brojProjekcija = rset.getInt(index++);
+				int ukupnaCena = rset.getInt(index++);
+
+				int brojKarti = rset.getInt(index++);
+				
+				Projekcija projekcija = new Projekcija(brojProjekcija,ukupnaCena, film);
+
+				Karta karta = new Karta(brojKarti, projekcija);
+				karte.add(karta);
+
+			}
+			return karte;
+		}catch (SQLException ex) {
+			System.out.println("Greska u SQL upitu");
+			ex.printStackTrace();
+			}finally {
+				try {pstmt.close();} catch (SQLException ex1) {ex1.printStackTrace();}
+				try {rset.close();} catch (Exception ex1) {ex1.printStackTrace();}
+				try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			}
+			return null;
+		
+	}
+	public static Karta getCeoIzvestaj(){
+		
+		Connection conn = ConnectionManager.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		try {
+			String query = "select count(distinct projekcija.id), SUM(cenaKarte), COUNT(karta.id)\r\n" + 
+					"from karta\r\n" + 
+					"left join projekcija on projekcija.id = karta.projekcija_id";
+			
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				int index = 1;
+
+				int brojProjekcija = rset.getInt(index++);
+				int ukupnaCena = rset.getInt(index++);
+
+				int brojKarti = rset.getInt(index++);
+				
+				Projekcija projekcija = new Projekcija(brojProjekcija,ukupnaCena);
+
+				Karta karta = new Karta(brojKarti, projekcija);
+				return karta;
+
+			}
+		}catch (SQLException ex) {
+			System.out.println("Greska u SQL upitu");
+			ex.printStackTrace();
+			}finally {
+				try {pstmt.close();} catch (SQLException ex1) {ex1.printStackTrace();}
+				try {rset.close();} catch (Exception ex1) {ex1.printStackTrace();}
+				try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			}
+			return null;
+		
+	}
 }

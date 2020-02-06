@@ -31,6 +31,12 @@ public class Film {
 		this.id = id;
 		this.naziv = naziv;
 	}
+	
+
+	public Film(String naziv) {
+		super();
+		this.naziv = naziv;
+	}
 
 	public Film(int id, String naziv, String reziser, String glumci, String zanrovi, String distributer,
 			Integer godinaProizvodnje, String opis, int trajanje, String zemljaPorekla) {

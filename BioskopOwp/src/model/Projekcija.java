@@ -19,10 +19,7 @@ public class Projekcija {
 	public Projekcija() {
 		
 	}
-	
-	
-	
-	
+
 	
 	public Projekcija(TipProjekcije tipProjekcije, Sala sala, Timestamp datumVreme, double cenaKarte,
 			Film prikazaniFilm) {
@@ -71,6 +68,18 @@ public class Projekcija {
 	}
 
 
+	public Projekcija(int id, double cenaKarte, Film prikazaniFilm) {
+		super();
+		this.id = id;
+		this.cenaKarte = cenaKarte;
+		this.prikazaniFilm = prikazaniFilm;
+	}
+	
+	public Projekcija(int id, double cenaKarte) {
+		super();
+		this.id = id;
+		this.cenaKarte = cenaKarte;
+	}
 
 	public Projekcija(int id) {
 		super();

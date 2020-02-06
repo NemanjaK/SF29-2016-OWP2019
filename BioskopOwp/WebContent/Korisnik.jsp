@@ -28,7 +28,8 @@
 					<td>${ulogovanKorisnikRole.role}</td>
 				</tr>
 			</table>
-			<table>
+			<h4>Izmeni loznku:</h4>
+			<table>	
 					<form action="KorisnikServlet" method="post">
 					<input type="hidden" name="action" value="update"/>
 					<input type="hidden" name="korisnickoIme" value="${ulogovanKorisnikRole.korisnickoIme}"/>		
@@ -66,6 +67,7 @@
 			</table>
 		</c:when>
 	</c:choose>
-
+			<a href="LogoutServlet">Odjava</a><br/> <br />
+	
 </body>
 </html>

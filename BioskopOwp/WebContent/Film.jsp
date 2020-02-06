@@ -27,7 +27,7 @@
 			<a href="KorisnikServlet">Profil</a><br /> <br />
 			</c:if>
 			
-			<c:if test="${ulogovanKorisnikRole.role == 'KORISNIK'}">
+			<c:if test="${ulogovanKorisnikRole.role == 'KORISNIK' || ulogovanKorisnikRole.role == 'ADMIN'}">
 			<a href="LogoutServlet">Odjava</a><br/> <br />
 			</c:if>
 			</p>
@@ -60,8 +60,6 @@
 			</p>
 		</table>
 		</c:when>
-		<c:otherwise>
-		</c:otherwise>
 		</c:choose>
 		<p>
 			<a href="FilmoviServlet">Povratak</a>
