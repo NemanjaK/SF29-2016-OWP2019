@@ -110,12 +110,12 @@ public class KartaDAO {
 		ResultSet rset = null;
 
 		try {
-			String query = "select film.id, film.naziv, projekcija.id, projekcija.vremePrikazivanja, tipProjekcije.naziv, sala.naziv, karta.sediste_redniBroj, karta.korisnickoIme\r\n" + 
+			String query = "select film.id, film.naziv, projekcija.id, projekcija.vremePrikazivanja, tipProjekcije.naziv, sala.naziv, karta.id, karta.sediste_redniBroj, karta.korisnickoIme\r\n" + 
 					"from karta\r\n" + 
 					"left join projekcija on projekcija.id = karta.projekcija_id\r\n" + 
-					"left join film on film.id = projekcija.id\r\n" + 
-					"left join tipProjekcije on tipProjekcije.id = projekcija.id\r\n" + 
-					"left join sala on sala.id = projekcija.id where karta.id = ?";
+					"left join film on film.id = projekcija.film_id\r\n" + 
+					"left join tipProjekcije on tipProjekcije.id = projekcija.tipProjekcije_id\r\n" + 
+					"left join sala on sala.id = projekcija.sala_id where karta.id = ?";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, id);
@@ -134,6 +134,8 @@ public class KartaDAO {
 				String tipProjekcijeNaziv = rset.getString(index++);
 				String salaNaziv = rset.getString(index++);		
 				
+				int idKarta = rset.getInt(index++);
+				
 				int sediste = rset.getInt(index++);
 				
 				String korisnik = rset.getString(index++);
@@ -146,9 +148,70 @@ public class KartaDAO {
 				
 				Projekcija projekcija = new Projekcija(idP,tp,sl,vremePrikazivanja,film);
 						
-				return new Karta(projekcija, sed, kor);
+				return new Karta(idKarta, projekcija, sed, kor);
 
 			}
+		} catch (SQLException ex) {
+			System.out.println("Greska u SQL upitu!");
+			ex.printStackTrace();
+
+		} finally {
+			try {pstmt.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {rset.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
+		}
+		return null;
+
+	}
+	public static List<Karta> getAll() {
+		List<Karta> karte = new ArrayList<>();
+		Connection conn = ConnectionManager.getConnection();
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		try {
+			String query = "select film.id, film.naziv, projekcija.id, projekcija.vremePrikazivanja, tipProjekcije.naziv, sala.naziv, karta.id, karta.sediste_redniBroj, karta.korisnickoIme\r\n" + 
+					"from karta\r\n" + 
+					"left join projekcija on projekcija.id = karta.projekcija_id\r\n" + 
+					"left join film on film.id = projekcija.film_id\r\n" + 
+					"left join tipProjekcije on tipProjekcije.id = projekcija.tipProjekcije_id\r\n" + 
+					"left join sala on sala.id = projekcija.sala_id";
+
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			
+			System.out.println(pstmt);
+			while (rset.next()) {
+				int index = 1;
+
+				int idF = rset.getInt(index++);
+				String nazivF = rset.getString(index++);
+				
+				int idP = rset.getInt(index++);
+				java.sql.Date vremePrikazivanjaSql = rset.getDate(index++);
+				Timestamp vremePrikazivanja = new Timestamp(vremePrikazivanjaSql.getTime());			
+				String tipProjekcijeNaziv = rset.getString(index++);
+				String salaNaziv = rset.getString(index++);		
+				
+				int kartaId = rset.getInt(index++);
+				int sediste = rset.getInt(index++);
+				
+				String korisnik = rset.getString(index++);
+				
+				Film film = new Film(idF, nazivF);
+				Sala sl = new Sala(salaNaziv);
+				TipProjekcije tp = new TipProjekcije(tipProjekcijeNaziv);
+				Sediste sed = new Sediste(sediste);
+				Korisnik kor = new Korisnik(korisnik);
+				
+				Projekcija projekcija = new Projekcija(idP,tp,sl,vremePrikazivanja,film);
+						
+				Karta karta = new Karta(kartaId, projekcija, sed, kor);
+				karte.add(karta);
+
+			}
+			return karte;
 		} catch (SQLException ex) {
 			System.out.println("Greska u SQL upitu!");
 			ex.printStackTrace();
@@ -245,5 +308,26 @@ public class KartaDAO {
 			}
 			return null;
 		
+	}
+	
+	public static boolean delete(int id) {
+		Connection conn = ConnectionManager.getConnection();
+
+		PreparedStatement pstmt = null;
+		try {
+			String query = "DELETE FROM karta WHERE id = ?";
+
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, id);
+			System.out.println(pstmt);
+
+			return pstmt.executeUpdate() == 1;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			try {pstmt.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
+		}
+		return false;
 	}
 }

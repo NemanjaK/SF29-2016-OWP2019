@@ -22,12 +22,13 @@ import model.Korisnik;
 import model.Projekcija;
 import model.Sala;
 import model.Sediste;
+import model.Korisnik.Role;
 
 @SuppressWarnings("serial")
 public class KarteServlet extends HttpServlet {
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String ulogovanKorisnickoIme = (String) request.getSession().getAttribute("ulogovanKorisnickoIme");
 
 		if (ulogovanKorisnickoIme == null) {
@@ -37,13 +38,13 @@ public class KarteServlet extends HttpServlet {
 		int id = Integer.parseInt(request.getParameter("id"));
 		int idSala = Integer.parseInt(request.getParameter("idSala"));
 		try {
-			
+
 			Korisnik ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
 			if (ulogovanKorisnik == null) {
 				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
 				return;
 			}
-			
+
 			List<Sediste> sedista = SedisteDAO.getSedistaFromSala(idSala);
 			Sala sala = SalaDAO.getOne(idSala);
 			Projekcija projekcija = ProjekcijeDAO.getOne(id);
@@ -52,39 +53,52 @@ public class KarteServlet extends HttpServlet {
 			request.setAttribute("projekcija", projekcija);
 			request.getRequestDispatcher("KupiKartu.jsp").forward(request, response);
 
-			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 
 	}
 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String ulogovanKorisnickoIme = (String) request.getSession().getAttribute("ulogovanKorisnickoIme");
+
+		if (ulogovanKorisnickoIme == null) {
+			response.sendRedirect("./Login.html");
+			return;
+		}
+
 		try {
+			Korisnik ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
+			if (ulogovanKorisnik == null) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}if (ulogovanKorisnik.getRole() == Role.ADMIN) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+
 			String action = request.getParameter("action");
 			switch (action) {
 			case "add": {
 
-				String ulogovanKorisnickoIme = (String) request.getSession().getAttribute("ulogovanKorisnickoIme");
-				Korisnik ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
-				
 				int id = Integer.parseInt(request.getParameter("id"));
 				Projekcija projekcija = ProjekcijeDAO.getOne(id);
-				
+
 				int sediste = Integer.parseInt(request.getParameter("sediste"));
 				int sala = Integer.parseInt(request.getParameter("sala"));
 				Sediste sedisteS = SedisteDAO.getOne(sala, sediste);
-				
+
 				LocalDateTime now = LocalDateTime.now();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				String formatDateTime = now.format(formatter);
 				System.out.println(formatter);
 				Timestamp datetime = new Timestamp(KartaDAO.DATETIME_FORMAT.parse(formatDateTime).getTime());
-				
+
+				SedisteDAO.zauzmiSediste(sala, sediste);
 				Karta k = new Karta(projekcija, sedisteS, datetime, ulogovanKorisnik);
 				KartaDAO.add(k);
-
 				break;
 			}
 			}
@@ -95,6 +109,4 @@ public class KarteServlet extends HttpServlet {
 		response.sendRedirect("./ProjekcijeServlet");
 
 	}
-	}
-
-
+}

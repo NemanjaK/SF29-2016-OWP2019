@@ -92,39 +92,7 @@ public class ProjekcijeServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		try {
-			/*
-			 * String action = request.getParameter("action"); switch (action) { case "add":
-			 * {
-			 * 
-			 * String ulogovanKorisnickoIme = (String)
-			 * request.getSession().getAttribute("ulogovanKorisnickoIme"); Korisnik
-			 * ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
-			 * 
-			 * int sala = Integer.parseInt(request.getParameter("sala")); Sala sl = new
-			 * Sala(sala);
-			 * 
-			 * String dateString = request.getParameter("date"); String timeString =
-			 * request.getParameter("time"); String datetimeString = dateString + " " +
-			 * timeString; System.out.println(datetimeString); Timestamp datetime = new
-			 * Timestamp(ProjekcijeDAO.DATETIME_FORMAT.parse(datetimeString).getTime());
-			 * 
-			 * String cenaKarte = request.getParameter("cenaKarte"); double cena =
-			 * Double.parseDouble(cenaKarte);
-			 * 
-			 * 
-			 * // String korisnickoIme = request.getParameter("korisnickoIme"); Korisnik //
-			 * korisnik = new Korisnik(korisnickoIme); // int film =
-			 * Integer.parseInt(request.getParameter("film")); Film f = new Film(film);
-			 * 
-			 * int sad = Integer.parseInt(request.getParameter("tipProjekcije"));
-			 * TipProjekcije tp = new TipProjekcije(sad);
-			 * 
-			 * Projekcija p = new Projekcija(tp, sl, datetime, cena, ulogovanKorisnik,f);
-			 * ProjekcijeDAO.add(p);
-			 * 
-			 * break; } }
-			 * 
-			 */} catch (Exception ex) {
+			} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		response.sendRedirect("./ProjekcijeServlet");

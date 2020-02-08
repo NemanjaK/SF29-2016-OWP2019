@@ -33,11 +33,15 @@ public class KorisniciServlet extends HttpServlet {
 				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
 				return;
 			}
-			
+			if (ulogovanKorisnik.getRole() == Role.KORISNIK) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+
 			List<Korisnik> korisnici = KorisnikDAO.getAll();
 
 			request.setAttribute("korisnici", korisnici);
-			request.setAttribute("ulogovanKorisnikRole", ulogovanKorisnik);	
+			request.setAttribute("ulogovanKorisnikRole", ulogovanKorisnik);
 			request.getRequestDispatcher("Korisnici.jsp").forward(request, response);
 
 		} catch (ParseException e) {
@@ -49,6 +53,7 @@ public class KorisniciServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String ulogovanKorisnickoIme = (String) request.getSession().getAttribute("ulogovanKorisnickoIme");
 
 		try {
 
@@ -63,15 +68,15 @@ public class KorisniciServlet extends HttpServlet {
 
 				String role = request.getParameter("role");
 				Role newRole = Role.valueOf(role);
-				
+
 				String lozinka = request.getParameter("lozinka");
 				if ("".equals(lozinka))
 					throw new Exception("Lozinka je prazna!");
 
 				String ponovljenaLozinka = request.getParameter("ponovljenaLozinka");
 				if (!lozinka.equals(ponovljenaLozinka))
-					throw new Exception("Lozinke se ne podudaraju!");			
-				
+					throw new Exception("Lozinke se ne podudaraju!");
+
 				korisnik.setLozinka(lozinka);
 				korisnik.setRole(newRole);
 
@@ -80,6 +85,16 @@ public class KorisniciServlet extends HttpServlet {
 				break;
 			}
 			case "delete": {
+				Korisnik ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
+				if (ulogovanKorisnik == null) {
+					request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+					return;
+				}
+				if (ulogovanKorisnik.getRole() == Role.KORISNIK) {
+					request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+					return;
+				}
+				
 				String korisnickoIme = request.getParameter("korisnickoIme");
 				KorisnikDAO.delete(korisnickoIme);
 			}

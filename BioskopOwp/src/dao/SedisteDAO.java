@@ -21,7 +21,7 @@ public class SedisteDAO {
 		ResultSet rset = null;
 
 		try {
-			String query = "SELECT redniBroj FROM sediste_sala WHERE sala_id = ?";
+			String query = "SELECT redniBroj FROM sediste_sala WHERE sala_id = ? AND zauzeto=0";
 
 			pstmt = conn.prepareStatement(query);
 			//int index = 1;
@@ -55,7 +55,7 @@ public class SedisteDAO {
 		ResultSet rset = null;
 
 		try {
-			String query = "SELECT redniBroj FROM sediste_sala WHERE sala_id = ? and redniBroj = ?";
+			String query = "SELECT redniBroj FROM sediste_sala WHERE sala_id = ? and redniBroj = ? and zauzeto=0";
 
 			pstmt = conn.prepareStatement(query);
 			int index = 1;
@@ -79,6 +79,32 @@ public class SedisteDAO {
 			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
 		}
 		return null;
+
+	}
+	public static boolean zauzmiSediste(int sala, int sediste) {
+		Connection conn = ConnectionManager.getConnection();
+
+		PreparedStatement pstmt = null;
+
+		try {
+			String query = "UPDATE sediste_sala SET zauzeto = 1 WHERE sala_id = ? and redniBroj = ?";
+
+			pstmt = conn.prepareStatement(query);
+			int index = 1;
+			pstmt.setInt(index++, sala);
+			pstmt.setInt(index++, sediste);
+			
+			return pstmt.executeUpdate() == 1;
+
+		} catch (SQLException ex) {
+			System.out.println("Greska u SQL upitu!");
+			ex.printStackTrace();
+
+		} finally {
+			try {pstmt.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
+		}
+		return false;
 
 	}
 }

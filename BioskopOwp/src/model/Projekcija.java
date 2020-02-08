@@ -15,6 +15,7 @@ public class Projekcija {
 	private double cenaKarte;
 	private Korisnik adminDodaoProjekciju;
 	private Film prikazaniFilm;
+	private int obrisan;
 	
 	public Projekcija() {
 		
@@ -47,7 +48,7 @@ public class Projekcija {
 
 
 	public Projekcija(int id, TipProjekcije tipProjekcije, Sala sala, Timestamp datumVreme, double cenaKarte,
-			Korisnik adminDodaoProjekciju, Film prikazaniFilm) {
+			Korisnik adminDodaoProjekciju, Film prikazaniFilm, int obrisan) {
 		super();
 		this.id = id;
 		this.tipProjekcije = tipProjekcije;
@@ -56,6 +57,7 @@ public class Projekcija {
 		this.cenaKarte = cenaKarte;
 		this.adminDodaoProjekciju = adminDodaoProjekciju;
 		this.prikazaniFilm = prikazaniFilm;
+		this.obrisan = obrisan;
 	}
 
 	public Projekcija(int id, TipProjekcije tipProjekcije, Sala sala, Timestamp datumVreme, Film prikazaniFilm) {
@@ -73,7 +75,7 @@ public class Projekcija {
 		this.id = id;
 		this.cenaKarte = cenaKarte;
 		this.prikazaniFilm = prikazaniFilm;
-	}
+	}	
 	
 	public Projekcija(int id, double cenaKarte) {
 		super();
@@ -142,6 +144,14 @@ public class Projekcija {
 		this.prikazaniFilm = prikazaniFilm;
 	}
 
+	public int getObrisan() {
+		return obrisan;
+	}
+
+
+	public void setObrisan(int obrisan) {
+		this.obrisan = obrisan;
+	}
 
 
 	@Override

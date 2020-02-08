@@ -109,16 +109,6 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>KarteServlet</display-name>
-    <servlet-name>KarteServlet</servlet-name>
-    <servlet-class>servlet.KarteServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>KarteServlet</servlet-name>
-    <url-pattern>/KarteServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
     <display-name>KartaServlet</display-name>
     <servlet-name>KartaServlet</servlet-name>
     <servlet-class>servlet.KartaServlet</servlet-class>
@@ -136,5 +126,25 @@
   <servlet-mapping>
     <servlet-name>IzvestajServlet</servlet-name>
     <url-pattern>/IzvestajServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>KarteServlet</display-name>
+    <servlet-name>KarteServlet</servlet-name>
+    <servlet-class>servlet.KarteServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>KarteServlet</servlet-name>
+    <url-pattern>/KarteServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SveKarteServlet</display-name>
+    <servlet-name>SveKarteServlet</servlet-name>
+    <servlet-class>servlet.SveKarteServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SveKarteServlet</servlet-name>
+    <url-pattern>/SveKarteServlet</url-pattern>
   </servlet-mapping>
 </web-app>

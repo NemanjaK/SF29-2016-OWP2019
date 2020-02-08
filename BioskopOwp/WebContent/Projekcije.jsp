@@ -66,6 +66,7 @@
 		</c:forEach>
 		
 	</table>
+			<a href="SveKarteServlet">Karte</a><br /> <br />
 	
 			<a href="FilmoviServlet">Filmovi</a><br /> <br />
 			

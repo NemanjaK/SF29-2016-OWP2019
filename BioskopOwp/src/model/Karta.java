@@ -30,8 +30,9 @@ public class Karta {
 		this.korisnikKupioKartu = korisnikKupioKartu;
 	}
 	
-	public Karta(Projekcija projekcija, Sediste sediste,Korisnik korisnikKupioKartu) {
+	public Karta(int id, Projekcija projekcija, Sediste sediste,Korisnik korisnikKupioKartu) {
 		super();
+		this.id = id;
 		this.projekcija = projekcija;
 		this.sediste = sediste;
 		this.korisnikKupioKartu = korisnikKupioKartu;

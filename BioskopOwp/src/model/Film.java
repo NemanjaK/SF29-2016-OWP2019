@@ -12,6 +12,7 @@ public class Film {
 	private String opis;
 	private int trajanje;
 	private String zemljaPorekla;
+	private int obrisan;
 
 	public Film() {
 
@@ -39,7 +40,7 @@ public class Film {
 	}
 
 	public Film(int id, String naziv, String reziser, String glumci, String zanrovi, String distributer,
-			Integer godinaProizvodnje, String opis, int trajanje, String zemljaPorekla) {
+			Integer godinaProizvodnje, String opis, int trajanje, String zemljaPorekla, int obrisan) {
 		super();
 		this.id = id;
 		this.naziv = naziv;
@@ -51,9 +52,17 @@ public class Film {
 		this.opis = opis;
 		this.trajanje = trajanje;
 		this.zemljaPorekla = zemljaPorekla;
+		this.obrisan = obrisan;
 	}
 
 
+
+	public int getObrisan() {
+		return obrisan;
+	}
+	public void setObrisan(int obrisan) {
+		this.obrisan = obrisan;
+	}
 
 	public int getId() {
 		return id;

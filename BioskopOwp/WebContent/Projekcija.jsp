@@ -25,11 +25,18 @@
 			<td>${projekcija.datumVreme}</td>
 			<td>${projekcija.cenaKarte}</td>
 		</tr>
-		
-	</table>
 	
+	</table>
+			<c:if test="${ulogovanKorisnikRole.role == 'ADMIN'}">
+				<form action="ProjekcijaServlet" method="post">
+					<input type="hidden" name="action" value="delete"/>
+					<input type="hidden" name="id" value="${projekcija.id}"/>
+					<tr><td/><td><input type="submit" value="Obrisi"></td>
+				</form>
+			</c:if>	
 	<c:choose>	
-		<c:when test="${ulogovanKorisnikRole.role == 'ADMIN'}">
+
+	<c:when test="${ulogovanKorisnikRole.role == 'ADMIN'}">
 		<h3>Prodate karte za projekciju</h3>				
 		<table border=2>
 		<tr>
@@ -43,7 +50,7 @@
 			<td><a href="KartaServlet?id=${karta.id}">${karta.datumProdaje}</a></td>
 			<td><a href="KorisnikServlet?korisnickoIme=${karta.korisnikKupioKartu.korisnickoIme}">${karta.korisnikKupioKartu.korisnickoIme}</a></td>		
 					
-		</tr>
+		</tr>	
 		</c:forEach>
 		</table>
 		</c:when>		
@@ -54,7 +61,7 @@
 	</c:choose>
 	
 		<a href="ProjekcijeServlet">Nazad</a>
-	
+		<br></br>
 		<c:if test="${ulogovanKorisnikRole.role == 'KORISNIK' || ulogovanKorisnikRole.role == 'ADMIN' }">
 			<a href="LogoutServlet">Odjava</a><br/> <br />
 		</c:if>

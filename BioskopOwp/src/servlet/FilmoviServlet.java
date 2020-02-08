@@ -112,10 +112,12 @@ public class FilmoviServlet extends HttpServlet {
 
 				String zemljaPorekla = request.getParameter("zemljaPorekla");
 
+				int obrisan = 0;
+				
 				int id = FilmoviDAO.getFilmId();
 
 				Film film = new Film(id, naziv, reziser, glumci, zanrovi, distributer, godinaProizvodnje, opis,
-						trajanje, zemljaPorekla);
+						trajanje, zemljaPorekla,obrisan);
 				FilmoviDAO.add(film);
 
 				break;

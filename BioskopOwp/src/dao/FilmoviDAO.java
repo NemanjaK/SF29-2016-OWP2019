@@ -21,7 +21,7 @@ public class FilmoviDAO {
 
 		try {
 			String query = "SELECT * FROM film WHERE naziv LIKE ? AND zanrovi LIKE ? AND distributer LIKE ? AND zemljaPorekla LIKE ? "
-					+ "AND trajanje >= ? AND trajanje <= ? AND godinaProizvodnje >= ? and godinaProizvodnje <= ? "+ sort +"";
+					+ "AND trajanje >= ? AND trajanje <= ? AND godinaProizvodnje >= ? and godinaProizvodnje <= ? and obrisan=0 "+ sort +"";
 
 			pstmt = conn.prepareStatement(query);
 			int index = 1;
@@ -52,9 +52,10 @@ public class FilmoviDAO {
 				String opis = rset.getString(index++);
 				Integer trajanjeF = rset.getInt(index++);
 				String zemljaPoreklaF = rset.getString(index++);				
+				Integer obrisan = rset.getInt(index++);
 				
 				Film film = new Film(id, nazivF, reziser, glumci, zanroviF, distributerF, godinaProizvodnjeF, opis,
-						trajanjeF, zemljaPoreklaF);
+						trajanjeF, zemljaPoreklaF, obrisan);
 				filmovi.add(film);
 			}
 			return filmovi;
@@ -78,7 +79,7 @@ public class FilmoviDAO {
 		ResultSet rset = null;
 
 		try {
-			String query = "SELECT id,naziv FROM film";
+			String query = "SELECT id,naziv FROM film WHERE obrisan=0";
 
 			pstmt = conn.prepareStatement(query);
 			int index = 1;
@@ -133,9 +134,10 @@ public class FilmoviDAO {
 				String opis = rset.getString(index++);
 				Integer trajanje = rset.getInt(index++);
 				String zemljaPorekla = rset.getString(index++);
-
+				Integer obrisan = rset.getInt(index++);
+				
 				return new Film(id, naziv, reziser, glumci, zanrovi, distributer, godinaProizvodnje, opis, trajanje,
-						zemljaPorekla);
+						zemljaPorekla, obrisan);
 
 			}
 		} catch (Exception ex) {
@@ -192,7 +194,7 @@ public class FilmoviDAO {
 
 		PreparedStatement pstmt = null;
 		try {
-			String query = "DELETE FROM film where id = ?";
+			String query = "UPDATE film set obrisan=1 WHERE id = ?";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, id);

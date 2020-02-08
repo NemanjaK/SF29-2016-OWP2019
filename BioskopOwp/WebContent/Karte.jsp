@@ -1,9 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<c:if test="${sessionScope.ulogovanKorisnickoIme == null || sessionScope.ulogovanRole == 'KORISNIK'}">
-	<c:redirect url="Login.html"/>
-</c:if>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +8,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-			<table border="1">
+
+	<table border=1>
 				<tr>
 					<th>Naziv filma</th>					
 					<th>Sediste</th>
@@ -20,20 +18,17 @@
 					<th>Sala</th>
 					<th>Tip projekcije</th>
 				</tr>
-				<tr>
+			<c:forEach var="karta" items="${karte}">
+					<tr>
 					<td>${karta.projekcija.prikazaniFilm.naziv}</td>					
 					<td>${karta.sediste.redniBroj}</td>
-					<td>${karta.projekcija.datumVreme}</td>
+					<td><a href="ProjekcijaServlet?id=${karta.projekcija.id}">${karta.projekcija.datumVreme}</td>
 					<td><a href="KorisnikServlet?korisnickoIme=${karta.korisnikKupioKartu.korisnickoIme}">${karta.korisnikKupioKartu.korisnickoIme}</a></td>	
 					<td>${karta.projekcija.sala.naziv}</td>
 					<td>${karta.projekcija.tipProjekcije.naziv}</td>
-				</tr>
-			</table>
-			<br></br>
-			<form action="KartaServlet" method="post">
-					<input type="hidden" name="action" value="delete"/>
-					<input type="hidden" name="id" value="${karta.id}"/>
-					<tr><td/><td><input type="submit" value="Obrisi"></td>
-			</form>	
-	</body>
+			</tr>
+
+		</c:forEach>
+	</table>
+</body>
 </html>

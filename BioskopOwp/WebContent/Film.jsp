@@ -53,16 +53,17 @@
 					<input type="hidden" name="id" value="${film.id}"/>
 					<tr><td/><td><input type="submit" value="Obrisi"></td>
 				</form>	
-			<p>	
-			<c:if test="${ulogovanKorisnikRole.role == 'ADMIN'}">
-			<a href="KorisniciServlet">Upravljanje korisnicima</a><br /> <br />
-			</c:if>	
-			</p>
+
 		</table>
 		</c:when>
 		</c:choose>
 		<p>
 			<a href="FilmoviServlet">Povratak</a>
+		</p>
+		<p>	
+			<c:if test="${ulogovanKorisnikRole.role == 'ADMIN'}">
+			<a href="KorisniciServlet">Upravljanje korisnicima</a><br /> <br />
+			</c:if>	
 		</p>
 	</body>
 </html>
