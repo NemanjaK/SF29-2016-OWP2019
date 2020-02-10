@@ -124,7 +124,9 @@ CREATE TABLE projekcija(
     FOREIGN KEY(film_id) REFERENCES film(id) ON DELETE RESTRICT   
 );
 
+INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id,obrisan) VALUES (1, 1, '2020-02-9 20:00:00.00', 250.00, 'aca', 1, 0);
 INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id,obrisan) VALUES (1, 1, '2020-02-11 20:00:00.00', 250.00, 'aca', 1, 0);
+INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id,obrisan) VALUES (1, 2, '2020-02-11 23:00:00.00', 350.00, 'aca', 1, 0);
 INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id,obrisan) VALUES (1, 1, '2020-02-10 21:00:00.00', 250.00, 'aca', 2, 0);
 INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id,obrisan) VALUES (1, 1, '2020-02-13 22:00:00.00', 250.00, 'aca', 2, 0);
 INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id,obrisan) VALUES (1, 2, '2020-02-12 21:00:00.00', 350.00, 'aca', 2, 0);
@@ -141,6 +143,7 @@ INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte,
 INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id,obrisan) VALUES (2, 2, '2020-02-13 22:00:00.00', 650.00, 'aca', 6, 0);
 INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id,obrisan) VALUES (3, 3, '2020-02-12 21:00:00.00', 350.00, 'aca', 6, 0);
 INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id,obrisan) VALUES (3, 2, '2020-02-10 21:00:00.00', 350.00, 'aca', 7, 0);
+INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id,obrisan) VALUES (3, 2, '2020-02-13 22:00:00.00', 450.00, 'aca', 7, 0);
 INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id,obrisan) VALUES (3, 3, '2020-02-12 21:00:00.00', 650.00, 'aca', 7, 0);
 INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id,obrisan) VALUES (2, 1, '2020-02-10 21:00:00.00', 250.00, 'aca', 8, 0);
 INSERT INTO projekcija (tipProjekcije_id, sala_id, vremePrikazivanja, cenaKarte, korisnickoIme, film_id,obrisan) VALUES (1, 1, '2020-02-13 19:00:00.00', 250.00, 'aca', 8, 0);

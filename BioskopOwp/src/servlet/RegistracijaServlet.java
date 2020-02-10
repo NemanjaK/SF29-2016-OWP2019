@@ -2,8 +2,6 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -12,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.DateConverter;
 import dao.KorisnikDAO;
 import model.Korisnik;
 import model.Korisnik.Role;
@@ -68,8 +65,4 @@ public class RegistracijaServlet extends HttpServlet {
 
 	}
 
-	private Date Date() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

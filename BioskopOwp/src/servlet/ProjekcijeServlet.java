@@ -66,20 +66,12 @@ public class ProjekcijeServlet extends HttpServlet {
 			
 			String sort = request.getParameter("sort");
 			sort = (sort != null ? sort : "");
-			System.out.println("dodje li");
-			
-//			
-//			 String vremeOdparam = request.getParameter("vremeOd"); DateTimeFormatter
-//			 formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
-//			 vremeOdparam  = (vremeOdparam != null ? vremeOdparam: ""); 
-//			 Date vremeOd = (Date) formatter.parse(vremeOdparam); 
-			List<Karta> karte = KartaDAO.getIzvesajKarti();
+
 			List<Projekcija> projekcije = ProjekcijeDAO.getAll(minCenaKarte, maxCenaKarte, nazivFilm, tipProjekcije,
 					sala, sort);
 			
 			request.setAttribute("ulogovanKorisnikRole", ulogovanKorisnik);
 			
-			request.setAttribute("karte", karte);
 			request.setAttribute("projekcije", projekcije);
 			request.getRequestDispatcher("Projekcije.jsp").forward(request, response);
 

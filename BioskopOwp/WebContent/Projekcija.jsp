@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +23,7 @@
 			<td><a href="FilmServlet?id=${projekcija.prikazaniFilm.id}">${projekcija.prikazaniFilm.naziv}</a></td>		
 			<td>${projekcija.tipProjekcije.naziv}</td>
 			<td>${projekcija.sala.naziv}</td>
-			<td>${projekcija.datumVreme}</td>
+			<td><fmt:formatDate value="${projekcija.datumVreme}" pattern="dd/MM/yyyy HH:mm"/></td>
 			<td>${projekcija.cenaKarte}</td>
 		</tr>
 	
@@ -47,7 +48,7 @@
 		<c:forEach var="karta" items="${karte}">
 		<tr>
 			<td>${karta.sediste.redniBroj}</td>
-			<td><a href="KartaServlet?id=${karta.id}">${karta.datumProdaje}</a></td>
+			<td><a href="KartaServlet?id=${karta.id}"><fmt:formatDate value="${karta.datumProdaje}" pattern="dd/MM/yyyy HH:mm"/></a></td>
 			<td><a href="KorisnikServlet?korisnickoIme=${karta.korisnikKupioKartu.korisnickoIme}">${karta.korisnikKupioKartu.korisnickoIme}</a></td>		
 					
 		</tr>	

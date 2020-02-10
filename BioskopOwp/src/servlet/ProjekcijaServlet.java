@@ -32,6 +32,7 @@ public class ProjekcijaServlet extends HttpServlet {
 
 			Korisnik ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
 
+			
 			projekcija = ProjekcijeDAO.getOne(id);
 			List<Karta> karte = KartaDAO.getKarteByProj(id);
 
@@ -40,7 +41,6 @@ public class ProjekcijaServlet extends HttpServlet {
 			request.setAttribute("ulogovanKorisnikRole", ulogovanKorisnik);
 			request.getRequestDispatcher("Projekcija.jsp").forward(request, response);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

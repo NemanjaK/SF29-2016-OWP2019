@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,19 +55,24 @@
 			</td>
 			</tr>			
 		</form> 
-
+		
 		<c:forEach var="projekcija" items="${projekcije}">
 		<tr>
 			<td><a href="FilmServlet?id=${projekcija.prikazaniFilm.id}">${projekcija.prikazaniFilm.naziv}</a></td>		
 			<td>${projekcija.tipProjekcije.naziv}</td>
 			<td>${projekcija.sala.naziv}</td>
-			<td><a href="ProjekcijaServlet?id=${projekcija.id}">${projekcija.datumVreme}</a></td>
+			<td><a href="ProjekcijaServlet?id=${projekcija.id}"><fmt:formatDate value="${projekcija.datumVreme}" pattern="dd/MM/yyyy HH:mm"/></a></td>
 			<td>${projekcija.cenaKarte}</td>
 		</tr>
 		</c:forEach>
 		
 	</table>
+	
+			<a href="Login.html">Uloguj se</a><br /> <br />
+	
+			<c:if test="${ulogovanKorisnikRole.role == 'ADMIN' || ulogovanKorisnikRole.role == 'KORISNIK'}">	
 			<a href="SveKarteServlet">Karte</a><br /> <br />
+			</c:if>	
 	
 			<a href="FilmoviServlet">Filmovi</a><br /> <br />
 			

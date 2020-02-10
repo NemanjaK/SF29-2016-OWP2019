@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSourceFactory;
 
 public class ConnectionManager {
-	private static final String DATABASE_NAME = "OWPBioskop.db";
+	private static final String DATABASE_NAME = "BioskopOWP.db";
 
 	private static final String FILE_SEPARATOR = System.getProperty("file.separator");
 	private static final String WINDOWS_PATH = "C:" + FILE_SEPARATOR + "Users" + FILE_SEPARATOR + "Nemandza" + FILE_SEPARATOR + DATABASE_NAME;
@@ -25,16 +25,14 @@ public class ConnectionManager {
 			
 			dataSource = BasicDataSourceFactory.createDataSource(dataSourceProperties); // connection pool
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		}
 	}
 
 	public static Connection getConnection() {
 		try {
-			return dataSource.getConnection(); // slobodna konekcija se vadi iz pool-a na zahtev
+			return dataSource.getConnection();
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		}
 

@@ -32,10 +32,6 @@ public class KartaServlet extends HttpServlet {
 				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
 				return;
 			}
-			if (ulogovanKorisnik.getRole() == Role.KORISNIK) {
-				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
-				return;
-			}
 
 			int id = Integer.parseInt(request.getParameter("id"));
 			Karta karta = KartaDAO.getOne(id);

@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+	
 <c:if test="${ulogovanKorisnickoIme == null}">
 	<c:redirect url="Login.html" />
 </c:if>
@@ -24,7 +26,7 @@
 
 				<tr>
 					<td>${ulogovanKorisnickoIme}</td>
-					<td>${ulogovanDatumRegistracije}</td>
+					<td><fmt:formatDate value="${ulogovanDatumRegistracije}" pattern="dd/MM/yyyy"/></td>
 					<td>${ulogovanKorisnikRole.role}</td>
 				</tr>
 			</table>
@@ -47,7 +49,7 @@
 					<input type="hidden" name="action" value="update"/>
 					<input type="hidden" name="korisnickoIme" value="${korisnik.korisnickoIme}"/>
 					<tr><td align="right">Korisnicko ime:</td><td><input type="text" name="newKorisnickoIme" value="${korisnik.korisnickoIme}"/></td></tr>
-					<tr><td align="right">Datum registracije:</td><td>${korisnik.datumRegistracije}"</td></tr>
+					<tr><td align="right">Datum registracije:</td><td><fmt:formatDate value="${korisnik.datumRegistracije}" pattern="dd/MM/yyyy"/></td></tr>
 					<tr><td align="right">Uloga:</td><td>
 						<select name="role"/>
 							<option value="ADMIN">ADMIN</option>

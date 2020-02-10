@@ -31,13 +31,15 @@ public class SveKarteServlet extends HttpServlet {
 				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
 				return;
 			}
-			if (ulogovanKorisnik.getRole() == Role.KORISNIK) {
-				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
-				return;
-			}
-			List<Karta> karte = KartaDAO.getAll();
+		
+			String sort = request.getParameter("sort");
+			sort = (sort != null ? sort : "");
 
+			List<Karta> karte = KartaDAO.getAll(sort);
+			List<Karta> karteKorisnika = KartaDAO.getKarteKorisnik(ulogovanKorisnickoIme);
 			request.setAttribute("karte", karte);
+			request.setAttribute("karteKorisnika", karteKorisnika);
+			request.setAttribute("ulogovanKorisnikRole", ulogovanKorisnik);	
 			request.getRequestDispatcher("Karte.jsp").forward(request, response);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -46,7 +48,6 @@ public class SveKarteServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

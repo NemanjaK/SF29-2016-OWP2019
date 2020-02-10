@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:if test="${ulogovanKorisnickoIme == null || ulogovanKorisnikRole.role == 'KORISNIK'}">
 	<c:redirect url="Login.html" />
 </c:if> 
@@ -23,7 +24,7 @@
 		<c:forEach var="korisnik" items="${korisnici}">
 			<tr>
 				<td><a href="KorisnikServlet?korisnickoIme=${korisnik.korisnickoIme}">${korisnik.korisnickoIme}</a></td>
-				<td>${korisnik.datumRegistracije}</td>
+				<td><fmt:formatDate value="${korisnik.datumRegistracije}" pattern="dd/MM/yyyy"/></td>
 				<td>${korisnik.role}</td>
 			</tr>
 			

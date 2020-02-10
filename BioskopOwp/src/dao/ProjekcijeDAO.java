@@ -34,11 +34,11 @@ public class ProjekcijeDAO {
 
 		ArrayList<Projekcija> projekcije = new ArrayList<Projekcija>();
 
-//		LocalDateTime now = LocalDateTime.now();
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//		String formatDateTime = now.format(formatter);
-//		System.out.println(formatDateTime);
-//		
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		String formatDateTime = now.format(formatter);
+		System.out.println(formatDateTime);
+	
 		try {
 			String query = "select projekcija.id, projekcija.cenaKarte, projekcija.vremePrikazivanja,projekcija.obrisan, film.id, film.naziv,tipProjekcije.id, tipProjekcije.naziv, sala.id, sala.naziv, korisnik.korisnickoIme\n" + 
 					"from projekcija\n" + 
@@ -47,7 +47,7 @@ public class ProjekcijeDAO {
 					"join sala on sala.id = projekcija.sala_id\n" + 
 					"join korisnik on korisnik.korisnickoIme = projekcija.korisnickoIme\n" + 
 					"WHERE projekcija.cenaKarte >= ? AND projekcija.cenaKarte <= ? AND film.naziv LIKE ?\n" + 
-					"AND tipProjekcije.naziv LIKE ? AND sala.naziv LIKE ? AND projekcija.obrisan = 0" + 
+					"AND tipProjekcije.naziv LIKE ? AND sala.naziv LIKE ? AND projekcija.vremePrikazivanja >= '" + now + "' AND projekcija.obrisan = 0" + 
 					" "+ sort +"";
 
 			pstmt = conn.prepareStatement(query);
@@ -63,7 +63,6 @@ public class ProjekcijeDAO {
 			System.out.println(pstmt);
 
 			rset = pstmt.executeQuery();
-			//SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			while (rset.next()) {
 				index = 1;
 				Integer id = rset.getInt(index++);
@@ -149,8 +148,6 @@ public class ProjekcijeDAO {
 
 			rset = pstmt.executeQuery();
 			
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
 			if (rset.next()) {
 				int index = 2;
 				Double cenaKarte = rset.getDouble(index++);

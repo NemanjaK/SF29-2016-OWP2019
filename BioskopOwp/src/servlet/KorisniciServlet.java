@@ -45,7 +45,6 @@ public class KorisniciServlet extends HttpServlet {
 			request.getRequestDispatcher("Korisnici.jsp").forward(request, response);
 
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -54,7 +53,12 @@ public class KorisniciServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String ulogovanKorisnickoIme = (String) request.getSession().getAttribute("ulogovanKorisnickoIme");
-
+		
+		if (ulogovanKorisnickoIme == null) {
+			response.sendRedirect("./Login.html");
+			return;
+		}		
+	
 		try {
 
 			String action = request.getParameter("action");

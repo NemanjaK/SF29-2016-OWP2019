@@ -62,10 +62,10 @@
 		</c:forEach>
 	</table>
 		<p>
+			<a href="Login.html">Uloguj se</a><br /> <br />
 		
 			<a href="ProjekcijeServlet">Povratak na projekcije</a><br /> <br />
-			
-			
+						
 			<c:if test="${ulogovanKorisnikRole.role == 'KORISNIK'}">
 			<a href="KorisnikServlet">Profil</a><br /> <br />
 			</c:if>

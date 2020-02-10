@@ -33,7 +33,7 @@ public class KartaDAO {
 		try {
 			String query = "select karta.id, karta.sediste_redniBroj, karta.vremeProdaje, karta.korisnickoIme, projekcija.id\r\n" + 
 					"from karta\r\n" + 
-					"left join projekcija on projekcija.id = karta.projekcija_id\r\n" + 
+					"join projekcija on projekcija.id = karta.projekcija_id\r\n" + 
 					"where projekcija.id = ?";
 			
 			pstmt = conn.prepareStatement(query);
@@ -163,7 +163,7 @@ public class KartaDAO {
 		return null;
 
 	}
-	public static List<Karta> getAll() {
+	public static List<Karta> getAll(String sort) {
 		List<Karta> karte = new ArrayList<>();
 		Connection conn = ConnectionManager.getConnection();
 
@@ -176,7 +176,7 @@ public class KartaDAO {
 					"left join projekcija on projekcija.id = karta.projekcija_id\r\n" + 
 					"left join film on film.id = projekcija.film_id\r\n" + 
 					"left join tipProjekcije on tipProjekcije.id = projekcija.tipProjekcije_id\r\n" + 
-					"left join sala on sala.id = projekcija.sala_id";
+					"left join sala on sala.id = projekcija.sala_id " + sort + "";
 
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
@@ -234,8 +234,8 @@ public class KartaDAO {
 		
 		try {
 			String query = "select film.naziv, count(distinct projekcija.id), SUM(cenaKarte), COUNT(karta.id)\r\n" + 
-					"from karta\r\n" + 
-					"left join projekcija on projekcija.id = karta.projekcija_id\r\n" + 
+					"from projekcija\r\n" + 
+					"left join karta on projekcija.id = karta.projekcija_id\r\n" + 
 					"left join film on film.id = projekcija.film_id\r\n" + 
 					"Group by film.naziv";
 			
@@ -278,8 +278,8 @@ public class KartaDAO {
 		
 		try {
 			String query = "select count(distinct projekcija.id), SUM(cenaKarte), COUNT(karta.id)\r\n" + 
-					"from karta\r\n" + 
-					"left join projekcija on projekcija.id = karta.projekcija_id";
+					"from projekcija\r\n" + 
+					"left join karta on projekcija.id = karta.projekcija_id";
 			
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
@@ -329,5 +329,69 @@ public class KartaDAO {
 			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
 		}
 		return false;
+	}
+	
+	public static List<Karta> getKarteKorisnik(String korisnickoIme) {
+		List<Karta> karte = new ArrayList<>();
+		Connection conn = ConnectionManager.getConnection();
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		try {
+			String query = "select film.id, film.naziv, projekcija.id, projekcija.vremePrikazivanja, tipProjekcije.naziv, sala.naziv, karta.id, karta.sediste_redniBroj, karta.korisnickoIme\r\n" + 
+					"from karta\r\n" + 
+					"left join projekcija on projekcija.id = karta.projekcija_id\r\n" + 
+					"left join film on film.id = projekcija.film_id\r\n" + 
+					"left join tipProjekcije on tipProjekcije.id = projekcija.tipProjekcije_id\r\n" + 
+					"left join sala on sala.id = projekcija.sala_id WHERE karta.korisnickoIme = ?";
+
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, korisnickoIme);
+			
+			rset = pstmt.executeQuery();
+
+			System.out.println(pstmt);
+			while (rset.next()) {
+				int index = 1;
+
+				int idF = rset.getInt(index++);
+				String nazivF = rset.getString(index++);
+				
+				int idP = rset.getInt(index++);
+				java.sql.Date vremePrikazivanjaSql = rset.getDate(index++);
+				Timestamp vremePrikazivanja = new Timestamp(vremePrikazivanjaSql.getTime());			
+				String tipProjekcijeNaziv = rset.getString(index++);
+				String salaNaziv = rset.getString(index++);		
+				
+				int kartaId = rset.getInt(index++);
+				int sediste = rset.getInt(index++);
+				
+				String korisnik = rset.getString(index++);
+				
+				Film film = new Film(idF, nazivF);
+				Sala sl = new Sala(salaNaziv);
+				TipProjekcije tp = new TipProjekcije(tipProjekcijeNaziv);
+				Sediste sed = new Sediste(sediste);
+				Korisnik kor = new Korisnik(korisnik);
+				
+				Projekcija projekcija = new Projekcija(idP,tp,sl,vremePrikazivanja,film);
+						
+				Karta karta = new Karta(kartaId, projekcija, sed, kor);
+				karte.add(karta);
+
+			}
+			return karte;
+		} catch (SQLException ex) {
+			System.out.println("Greska u SQL upitu!");
+			ex.printStackTrace();
+
+		} finally {
+			try {pstmt.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {rset.close();} catch (Exception ex1) {ex1.printStackTrace();}
+			try {conn.close();} catch (Exception ex1) {ex1.printStackTrace();}
+		}
+		return null;
+
 	}
 }

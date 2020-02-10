@@ -14,6 +14,7 @@ import dao.FilmoviDAO;
 import dao.KorisnikDAO;
 import model.Film;
 import model.Korisnik;
+import model.Korisnik.Role;
 
 @SuppressWarnings("serial")
 public class FilmoviServlet extends HttpServlet {
@@ -88,8 +89,23 @@ public class FilmoviServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String ulogovanKorisnickoIme = (String) request.getSession().getAttribute("ulogovanKorisnickoIme");
 
+		if (ulogovanKorisnickoIme == null) {
+			response.sendRedirect("./Login.html");
+			return;
+		}
 		try {
+			
+			Korisnik ulogovanKorisnik = KorisnikDAO.getOne(ulogovanKorisnickoIme);
+			if (ulogovanKorisnik == null) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}	if (ulogovanKorisnik.getRole() == Role.KORISNIK) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+		
 			String action = request.getParameter("action");
 			switch (action) {
 			case "add": {

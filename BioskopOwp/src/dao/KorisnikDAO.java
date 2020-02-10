@@ -65,7 +65,6 @@ public class KorisnikDAO {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, korisnickoIme);
 			rset = pstmt.executeQuery();
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 			if (rset.next()) {
 				int index = 2;
